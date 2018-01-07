@@ -22,6 +22,9 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 
+## Markdown generator
+playme.swift
+
 ## Obj-C/Swift specific
 *.hmap
 *.ipa
