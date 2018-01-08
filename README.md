@@ -21,9 +21,8 @@ Mainly focused on iOS native ones.
 
 #### Resources to check:
  
-[Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Documentation. </br> 
+[Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Cocoa Encyclopedia. </br> 
     [Factory Method Pattern](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
-    [SourceMaking](https://sourcemaking.com): GoF patterns nicely explained. </br>
 
 
 
@@ -142,7 +141,7 @@ extension PoppingLayer: Animatable {
 }
 ```
 
-### USAGE:
+### Usage:
 ##### Adding layers on ViewController view's layer and animating
 
 ```swift
@@ -184,3 +183,14 @@ class ViewController: UIViewController {
 
 ```
 
+## Class Cluster
+ > A class cluster an architecture that groups a number of private, concrete subclasses under a public, abstract superclass (pattern based on Abstract Factory).
+Class cluster is actually a specific implementation of a factory but the initialiser is used instead of the Factory Method to decide what instance to return. Also Factories are used to create instances implementing a protocol while Class Cluster is only suitable for creation of subclasses of an Abstract Class.
+ 
+However Class Clusters can only be implemented in Objective-C. Unlike Objective-C (where we can just replace 'self' in init method, and return proper subclass object based on the input type) when we call init method of a class we get only instance of that particular class in Swift...so we can't rely on the init method to construct a Class Cluster. A substitution whould be to use a Class Factory Method instead.
+ 
+  Cocoa is filled with Class Clusters implementations: NSNumber, NSString, NSArray, NSDictionary, NSData.
+
+#### Resources to check:
+[Class Cluster](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassClusters/ClassClusters.html#//apple_ref/doc/uid/TP40010810-CH4) in Apple's Cocoa Encyclopedia. </br>
+[Class Cluster](https://developer.apple.com/library/content/documentation/General/Conceptual/DevPedia-CocoaCore/ClassCluster.html#//apple_ref/doc/uid/TP40008195-CH7-SW1) in Apple's Cocoa DevPedia. </br>
