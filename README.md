@@ -195,7 +195,9 @@ However Class Clusters can only be implemented in Objective-C. Unlike Objective-
 
 
 ## Builder
-> Builder pattern separates the construction of a complex object from its representation so that the same construction process can create different representations.
+> Builder pattern separates the construction of a complex object from its representation so that the same construction process can create different representations. Builder pattern is not too much adopted in Objective-C/Swift.
+
+> “I think all of the famous GoF patterns exist within Cocoa, but many are either trivially implemented or made less necessary thanks to Objective-C. For example, the Cocoa convention of two stage allocation and initialization makes the GoF Abstract factory and Builder patterns trivial.” - Eric Buck (author of Cocoa Design Patterns)
 
 ### Implementation
 ```swift
