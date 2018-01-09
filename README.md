@@ -4,13 +4,10 @@ The aim is to showcase 'real-world' design patterns instead of abstaract bullshi
 Mainly focused on iOS native ones.
 
 
-## Class Factory Method (Factory Method)
- 
- > Class Factory Method is used when there are several classes that implement a common protocol or share a common base class.
- This pattern allows implementation subclasses to provide specializations without requiring the components that rely on them
- to know any details of those classes and how they relate to each other.
+## Factory
 
- A good example of Factory Method in Foundation is Data class, here's the initializers for creating an instance:
+
+ A good example of Factory in Foundation is Data class, here's the initializers for creating an instance:
  ```swift
     init(bytes: UnsafeRawPointer?, length: Int)
     init(bytesNoCopy: UnsafeMutableRawPointer, length: Int)
@@ -18,13 +15,6 @@ Mainly focused on iOS native ones.
     init(bytesNoCopy: UnsafeMutableRawPointer, length: Int, freeWhenDone: Bool)
     init(data: Data)
 ```
-
-#### Resources to check:
- 
-[Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Cocoa Encyclopedia. </br> 
-    [Factory Method Pattern](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
-
-
 
 ### Implementation
 
@@ -182,6 +172,18 @@ class ViewController: UIViewController {
 }
 
 ```
+
+
+## Class Factory Method (Virtual Constructor)
+ > Factory Method is used when there are several classes that implement a common protocol or share a common base class.
+ This pattern allows implementation subclasses to provide specializations without requiring the components that rely on them
+ to know any details of those classes and how they relate to each other.
+
+#### Resources to check:
+ 
+[Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Cocoa Encyclopedia. </br> 
+    [Factory Method Pattern](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
+    
 
 ## Class Cluster
  > A class cluster an architecture that groups a number of private, concrete subclasses under a public, abstract superclass (pattern based on Abstract Factory).
