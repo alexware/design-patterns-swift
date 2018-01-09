@@ -4,8 +4,15 @@ The aim is to showcase 'real-world' design patterns instead of abstaract bullshi
 Mainly focused on iOS native ones.
 
 
-## Factory
+## Factory Method (Virtual Constructor)
+ > Factory Method is used when there are several classes that implement a common protocol or share a common base class.
+ This pattern allows implementation subclasses to provide specializations without requiring the components that rely on them
+ to know any details of those classes and how they relate to each other.
 
+#### Resources to check:
+ 
+[Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Cocoa Encyclopedia. </br> 
+    [Factory Method](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
 
  A good example of Factory in Foundation is Data class, here's the initializers for creating an instance:
  ```swift
@@ -172,17 +179,6 @@ class ViewController: UIViewController {
 }
 
 ```
-
-
-## Class Factory Method (Virtual Constructor)
- > Factory Method is used when there are several classes that implement a common protocol or share a common base class.
- This pattern allows implementation subclasses to provide specializations without requiring the components that rely on them
- to know any details of those classes and how they relate to each other.
-
-#### Resources to check:
- 
-[Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Cocoa Encyclopedia. </br> 
-    [Factory Method Pattern](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
     
 
 ## Class Cluster
@@ -196,3 +192,81 @@ However Class Clusters can only be implemented in Objective-C. Unlike Objective-
 #### Resources to check:
 [Class Cluster](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassClusters/ClassClusters.html#//apple_ref/doc/uid/TP40010810-CH4) in Apple's Cocoa Encyclopedia. </br>
 [Class Cluster](https://developer.apple.com/library/content/documentation/General/Conceptual/DevPedia-CocoaCore/ClassCluster.html#//apple_ref/doc/uid/TP40008195-CH7-SW1) in Apple's Cocoa DevPedia. </br>
+
+
+## Builder
+> Builder pattern separates the construction of a complex object from its representation so that the same construction process can create different representations.
+
+### Implementation
+```swift
+typealias TemplateRenderData = [String: AnyObject]
+
+struct Metadata {
+    // ...
+    /* a bunch of data loaded from server (JSON config for example) */
+}
+
+protocol TemplateBuilder {
+    init (with metadata: Metadata)
+    func produceContentsData()
+    func produceMarkupData()
+    func produceThemeData()
+    func build() -> TemplateRenderData
+}
+
+/* Initialized with metadata (config) and produces data for rendering */
+class PresentationDataBuilder: TemplateBuilder {
+    
+    private var renderData = TemplateRenderData()
+    private let metadata: Metadata
+    
+    // may own private services ...
+    
+    required init (with metadata: Metadata) {
+        self.metadata = metadata
+    }
+    
+    func produceContentsData() {
+        // retrieve / process data (from some service (network/db) as an example)
+        // modify renderData
+    }
+    
+    func produceMarkupData() {
+        // retrieve / process data
+        // modify renderData
+    }
+    
+    func produceThemeData() {
+        // retrieve / process data
+        // modify renderData
+    }
+    
+    func build() -> TemplateRenderData {
+        return renderData
+    }
+}
+```
+
+### Usage:
+```swift
+class PresentationViewController: UIViewController {
+    
+    // ...
+    
+    func produceTemplate() {
+        let metadata = Metadata()
+        let builder = PresentationDataBuilder(with: metadata)
+        
+        builder.produceContentsData()
+        builder.produceMarkupData()
+        builder.produceThemeData()
+        
+        let templateRenderData = builder.build()
+        render(with: templateRenderData)
+    }
+    
+    func render(with: TemplateRenderData) {
+        // render presentation...
+    }
+}
+```
