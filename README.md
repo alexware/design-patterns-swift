@@ -14,7 +14,7 @@ Mainly focused on iOS native ones.
 [Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Cocoa Encyclopedia. </br> 
     [Factory Method](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
 
- A good example of Factory in Foundation is Data class, here's the initializers for creating an instance:
+ A good example of Factory is Data class (Foundation), here's the initializers for creating an instance:
  ```swift
     init(bytes: UnsafeRawPointer?, length: Int)
     init(bytesNoCopy: UnsafeMutableRawPointer, length: Int)
@@ -272,3 +272,26 @@ class PresentationViewController: UIViewController {
     }
 }
 ```
+
+
+## Singleton
+> The intent of a Singleton is to ensure a class only has one instance, and provide a global point of access to it. 
+Singletons in iOS SDK: FileManager, URLSession, Notification, UserDefaults, ProcessInfo (Foundation), UIApplication and UIAccelerometer (UIKit), SKPaymentQueue (StoreKit) etc.
+
+### Implementation
+```swift
+class AccountManager {
+  static let shared = AccountManager()
+  
+  var accountInfo = (userName: "Oleg", userId: "000000001")
+  
+  /* This prevents using AccountManager's initializer */
+  private init() { }
+}
+```
+### Usage:
+```swift
+let userName = AccountManager.shared.accountInfo.userName
+let userId = AccountManager.shared.accountInfo.userId
+```
+
