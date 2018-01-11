@@ -1,4 +1,4 @@
-# Implementing native iOS Design Patterns in Swift 4.
+# Implementing native (and not very native) iOS Design Patterns in Swift 4 ;]
 
 The aim is to showcase 'real-world' design patterns instead of abstaract bullshit.
 Mainly focused on iOS native ones.
