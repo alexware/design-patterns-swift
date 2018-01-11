@@ -305,11 +305,8 @@ Definition, implementations and pitfals: </br>
 ### Implementation
 
 ```swift
-import Foundation
-
 protocol ObjectPool {
     associatedtype Object
-    init (with: Array<Object>)
     func getObject() -> Object?
     func returnObject(_: Object)
 }
@@ -317,7 +314,7 @@ protocol ObjectPool {
 class Pool<T> {
     typealias Object = T
 
-    required init(with objects: [T]) {
+    init(with objects: [T]) {
         _data.reserveCapacity(_data.count)
         for o in objects { _data.append(o) }
         _semaphore = DispatchSemaphore(value: objects.count)
