@@ -13,7 +13,8 @@ The aim is to showcase 'real-world' design patterns implementations (or close to
 [Class Factory Methods](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassFactoryMethods/ClassFactoryMethods.html#//apple_ref/doc/uid/TP40010810-CH8-SW1) in Apple's Cocoa Encyclopedia. </br> 
     [Factory Method](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
 
- A good example of Factory is Data class (Foundation), here's the initializers for creating an instance:
+#### Cocoa/CocoaTouch Adaptation: </br> 
+A good example of Factory is Data class (Foundation), here's the initializers for creating an instance:
  ```swift
     init(bytes: UnsafeRawPointer?, length: Int)
     init(bytesNoCopy: UnsafeMutableRawPointer, length: Int)
@@ -186,7 +187,8 @@ Class cluster is actually a specific implementation of a factory but the initial
  
 However Class Clusters can only be implemented in Objective-C. Unlike Objective-C (where we can just replace 'self' in init method, and return proper subclass object based on the input type) when we call init method of a class we get only instance of that particular class in Swift...so we can't rely on the init method to construct a Class Cluster. A substitution whould be to use a Factory instead.
  
-  Cocoa is filled with Class Clusters implementations: NSNumber, NSString, NSArray, NSDictionary, NSData.
+#### Cocoa/CocoaTouch Adaptation: </br> 
+NSNumber, NSString, NSArray, NSDictionary, NSData. </br>
 
 #### Resources to check:
 [Class Cluster](https://developer.apple.com/library/content/documentation/General/Conceptual/CocoaEncyclopedia/ClassClusters/ClassClusters.html#//apple_ref/doc/uid/TP40010810-CH4) in Apple's Cocoa Encyclopedia. </br>
@@ -196,6 +198,8 @@ However Class Clusters can only be implemented in Objective-C. Unlike Objective-
 ## Builder
 > Builder pattern separates the construction of a complex object from its representation so that the same construction process can create different representations. Builder pattern is not too much adopted in Objective-C/Swift.
 
+#### Cocoa/CocoaTouch Adaptation: </br> 
+None. 
 > “I think all of the famous GoF patterns exist within Cocoa, but many are either trivially implemented or made less necessary thanks to Objective-C. For example, the Cocoa convention of two stage allocation and initialization makes the GoF Abstract factory and Builder patterns trivial.” - Eric Buck (author of Cocoa Design Patterns)
 
 ### Implementation 1 (Simple & Swifty)
@@ -307,7 +311,9 @@ class PresentationViewController: UIViewController {
 
 ## Singleton
 > The intent of a Singleton is to ensure a class only has one instance, and provide a global point of access to it. 
-Singletons in iOS SDK: FileManager, URLSession, Notification, UserDefaults, ProcessInfo (Foundation), UIApplication and UIAccelerometer (UIKit), SKPaymentQueue (StoreKit) etc.
+
+#### Cocoa/CocoaTouch Adaptation: </br> 
+FileManager, URLSession, Notification, UserDefaults, ProcessInfo (Foundation), UIApplication and UIAccelerometer (UIKit), SKPaymentQueue (StoreKit) etc. </br>
 
 ### Implementation
 ```swift
@@ -330,6 +336,10 @@ let userId = AccountManager.shared.accountInfo.userId
 > Object Pools are used when we need some heavy object to be cached (because of expensive initialization).
 
 Note: The Pool should be responsible for reseting the state of the objects. </br>
+
+#### Cocoa/CocoaTouch Adaptation: </br> 
+... </br>
+
 Definition, implementations and pitfals: </br>
 [Object Pool](https://en.wikipedia.org/wiki/Object_pool_pattern) on Wikipedia. </br>
 
@@ -398,6 +408,9 @@ class Pool<T: StateResetable> {
 
 ## Decorator
 > Pattern allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class. </br>
+
+#### Cocoa/CocoaTouch Adaptation: </br> 
+NSAttributedString, NSScrollView, and UIDatePicker </br>
 
 [Decorator](https://en.wikipedia.org/wiki/Decorator_pattern) on Wikipedia. </br>
 
