@@ -1,7 +1,6 @@
 # Implementing native (and not very native) iOS Design Patterns in Swift 4 ;]
 
-The aim is to showcase 'real-world' design patterns instead of abstaract bullshit.
-Mainly focused on iOS native ones.
+The aim is to showcase 'real-world' design patterns implementations (or close to that) instead of abstaract bullshit (the ones with Shapes, Food, Animals etc.) ;]
 
 
 ## Factory Method (Virtual Constructor)
