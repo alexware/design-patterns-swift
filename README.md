@@ -305,27 +305,32 @@ Definition, implementations and pitfals: </br>
 ### Implementation
 
 ```swift
+import Foundation
+
+protocol StateResetable {
+    func resetState()
+}
+
 protocol ObjectPool {
-    associatedtype Object
+    associatedtype Object: StateResetable
+    
     func getObject() -> Object?
     func returnObject(_: Object)
 }
 
-class Pool<T> {
+class Pool<T: StateResetable> {
+    
     typealias Object = T
+    
+    private var _data = [T]()
+    private let _queue = DispatchQueue(label: "com.zayatsoleh.objectpool.queue")
+    private let _semaphore: DispatchSemaphore
 
     init(with objects: [T]) {
         _data.reserveCapacity(_data.count)
         for o in objects { _data.append(o) }
         _semaphore = DispatchSemaphore(value: objects.count)
     }
-    
-    private var _data = [T]()
-    private let _queue = DispatchQueue(label: "com.zayatsoleh.objectpool.queue")
-    private let _semaphore: DispatchSemaphore
-}
-
-extension Pool: ObjectPool {
     
     func getObject() -> T? {
         var result: T?
@@ -346,6 +351,10 @@ extension Pool: ObjectPool {
     
     func returnObject(_ object: T) {
         _queue.sync {
+            /* Reseting state of the returned object.
+             */
+            object.resetState()
+            
             _data.append(object)
             /* Increment semaphore counter.
              * Pool can give out +1 object now.
