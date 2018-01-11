@@ -298,6 +298,10 @@ let userId = AccountManager.shared.accountInfo.userId
 ## Object Pool
 > Object Pools are used when we need some heavy object to be cached (because of expensive initialization).
 
+Note: The Pool should be responsible for reseting the state of the objects. </br>
+Definition, implementations and pitfals: </br>
+[Object Pool](https://en.wikipedia.org/wiki/Object_pool_pattern) on Wikipedia. </br>
+
 ### Implementation
 
 ```swift
