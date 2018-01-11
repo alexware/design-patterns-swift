@@ -199,7 +199,39 @@ However Class Clusters can only be implemented in Objective-C. Unlike Objective-
 
 > “I think all of the famous GoF patterns exist within Cocoa, but many are either trivially implemented or made less necessary thanks to Objective-C. For example, the Cocoa convention of two stage allocation and initialization makes the GoF Abstract factory and Builder patterns trivial.” - Eric Buck (author of Cocoa Design Patterns)
 
-### Implementation
+### Implementation 1 (Simple & Swifty)
+
+```swift
+protocol ComponentStyle {
+    var backgroundColor: UIColor { get set }
+    var borderColor: UIColor { get set }
+    var borderWidth: CGFloat { get set }
+    var size: CGSize { get set }
+}
+
+class TabStyle: ComponentStyle {
+    var backgroundColor: UIColor = .white
+    var borderColor: UIColor = .black
+    var borderWidth: CGFloat = 2.0
+    var size: CGSize = CGSize(width: 100.0, height: 54.0)
+    
+    init(build: (TabStyle) -> Void) { build(self) }
+    
+    private init() {}
+}
+```
+
+### Usage:
+```swift
+let tabStyle = TabStyle(build: {
+    $0.backgroundColor = .yellow
+    $0.borderColor = .clear
+    $0.borderWidth = 0.0
+    $0.size = CGSize(width: 80, height: 40)
+})
+```
+
+### Implementation 2 (Classic)
 ```swift
 typealias TemplateRenderData = [String: AnyObject]
 
@@ -365,3 +397,161 @@ class Pool<T: StateResetable> {
 }
 ```
 
+## Decorator
+> Pattern allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class. </br>
+
+[Decorator](https://en.wikipedia.org/wiki/Decorator_pattern) on Wikipedia. </br>
+
+### Implementation 
+```swift
+struct Article {
+    let id: String
+    let name: String
+    let data: [String: String]
+    let rating: Int
+    let viewCount: Int
+}
+
+enum ArticleType {
+    case blog, news
+}
+
+enum Result<T> {
+    case result(T); case error(Error)
+}
+
+protocol HTTPClient {
+    /* http client interface...
+     */
+}
+
+class ArticleAPIClient: HTTPClient {
+    /* http client implementation (with URLSession for ex.)
+     * init with base url, GET/POST/UPDATE...standard stuff
+     */
+}
+
+protocol ArticleServiceProtocol {
+    var client: HTTPClient { get }
+    /* For demonstration of this pattern service wiil just download data */
+    func load(byID id: String) -> Result<Article>
+    func load(withQuery query: String) -> Result<[Article]>
+    /*
+    func create(article: Article) -> Result<Bool>
+    func remove(byID id: String) -> Result<Bool>
+    func update(byID id: String, article: Article) -> Result<Bool>
+     */
+}
+
+class NewsArticleService: ArticleServiceProtocol {
+    let client: HTTPClient
+    
+    init(with httpClient: HTTPClient) {
+        self.client = httpClient
+    }
+    
+    func load(withQuery query: String) -> Result<[Article]> {
+        return .result([])
+    }
+    
+    func load(byID id: String) -> Result<Article> {
+        let dummyArticle = Article(id: "news.article.000001", name: "Tech News 01", data: [:], rating: 100, viewCount: 300)
+        return .result(dummyArticle)
+    }
+}
+
+class BlogArticleService: ArticleServiceProtocol {
+    let client: HTTPClient
+    
+    init(with httpClient: HTTPClient) {
+        self.client = httpClient
+    }
+    
+    func load(byID id: String) -> Result<Article> {
+        let dummyArticle = Article(id: "blog.article.000020", name: "Blog Article 20", data: [:], rating: 100, viewCount: 300)
+        return .result(dummyArticle)
+    }
+    
+    func load(withQuery query: String) -> Result<[Article]> {
+        return .result([])
+    }
+}
+
+enum ArticleCount: Int {
+    case ten = 10; case twenty = 20; case fifty = 50
+}
+
+enum ArticleGradationType {
+    case rating, views
+}
+
+protocol TopArticleDecoratorProtocol {
+    func loadTopRated(count: ArticleCount) -> Result<[Article]>
+    func loadMostViewed(count: ArticleCount) -> Result<[Article]>
+}
+
+class TopBlogArticleServiceDecorator: TopArticleDecoratorProtocol {
+    
+    let base: BlogArticleService
+    
+    init(with baseService: BlogArticleService) {
+        self.base = baseService
+    }
+    
+    func loadTopRated(count: ArticleCount) -> Result<[Article]> {
+        let query = SQLConstructor.makeQuery(object: "BlogArticle", orderBy: .rating, limit: count)
+        return base.load(withQuery: query)
+    }
+    
+    func loadMostViewed(count: ArticleCount) -> Result<[Article]> {
+        let query = SQLConstructor.makeQuery(object: "BlogArticle", orderBy: .views, limit: count)
+        return base.load(withQuery: query)
+    }
+}
+
+class TopNewsArticleServiceDecorator: TopArticleDecoratorProtocol {
+    
+    let base: NewsArticleService
+    
+    init(with baseService: NewsArticleService) {
+        self.base = baseService
+    }
+    
+    func loadTopRated(count: ArticleCount) -> Result<[Article]> {
+        let query = SQLConstructor.makeQuery(object: "NewsArticle", orderBy: .rating, limit: count)
+        return base.load(withQuery: query)
+    }
+    
+    func loadMostViewed(count: ArticleCount) -> Result<[Article]> {
+        let query = SQLConstructor.makeQuery(object: "NewsArticle", orderBy: .views, limit: count)
+        return base.load(withQuery: query)
+    }
+}
+
+struct SQLConstructor {
+    static func makeQuery(object: String, orderBy gradationType: ArticleGradationType, limit: ArticleCount) -> String {
+        // construct something like:
+        return "SELECT \(object) FROM ... ORDER BY \(gradationType) LIMIT \(limit)"
+    }
+}
+
+let articleAPIClient: HTTPClient = ArticleAPIClient()
+
+let baseNewsArticleService = NewsArticleService(with: articleAPIClient)
+let baseBlogArticleService = BlogArticleService(with: articleAPIClient)
+```
+
+### Usage:
+```swift
+// lets get some top stuff:
+let topNewsService = TopNewsArticleServiceDecorator(with: baseNewsArticleService)
+let topBlogService = TopBlogArticleServiceDecorator(with: baseBlogArticleService)
+
+// top news articles
+topNewsService.loadTopRated(count: .ten)
+topNewsService.loadMostViewed(count: .twenty)
+
+// top blog posts
+topBlogService.loadTopRated(count: .ten)
+topBlogService.loadMostViewed(count: .fifty)
+```
