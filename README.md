@@ -14,14 +14,7 @@ The aim is to showcase 'real-world' design patterns implementations (or close to
     [Factory Method](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
 
 #### Cocoa/CocoaTouch Adaptation: </br> 
-A good example of Factory is Data class (Foundation), here's the initializers for creating an instance:
- ```swift
-    init(bytes: UnsafeRawPointer?, length: Int)
-    init(bytesNoCopy: UnsafeMutableRawPointer, length: Int)
-    init(bytesNoCopy: UnsafeMutableRawPointer, length: Int, deallocator: ((UnsafeMutableRawPointer, Int) -> Void)? = nil)
-    init(bytesNoCopy: UnsafeMutableRawPointer, length: Int, freeWhenDone: Bool)
-    init(data: Data)
-```
+NSData/Data, Date/NSDate
 
 ### Implementation
 
