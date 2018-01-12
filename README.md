@@ -331,9 +331,10 @@ let userId = AccountManager.shared.accountInfo.userId
 Note: The Pool should be responsible for reseting the state of the objects. </br>
 
 #### Cocoa/CocoaTouch Adaptation: </br> 
-... </br>
+UIKit's tableView/collectionView reusable cells use Object Pool pattern (not sure how it's implemented though, no source code to look at). </br>
+The dequeueReusableCellWithIdentifier method combines Object Pool and Factory Method patterns. </br>
 
-Definition, implementations and pitfals: </br>
+More: </br>
 [Object Pool](https://en.wikipedia.org/wiki/Object_pool_pattern) on Wikipedia. </br>
 
 ### Implementation
