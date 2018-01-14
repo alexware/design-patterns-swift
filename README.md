@@ -1,6 +1,6 @@
-# Implementing native (and not very native) iOS Design Patterns in Swift 4 ;]
+# Implementing Design Patterns in Swift 4 ;]
 
-The aim is to showcase 'real-world' design patterns implementations (or close to that) instead of abstaract bullshit (the ones with Shapes, Food, Animals etc.) ;] Some of the code is omitted for brevity.
+The aim is to showcase 'real-world' design patterns implementations (or close) instead of abstract definitions and examples (Foo/Bar/Baz, Shapes/Food/Animals etc.) ;] Note: some of the code is omitted for brevity check out playground/project to see full implementation.
 
 ## Command
 > Pattern is used to incapsulate an operation (parameters required to execute the operation) so that it can be invoked later or by a different component. </br> 
@@ -8,7 +8,8 @@ The aim is to showcase 'real-world' design patterns implementations (or close to
 #### Cocoa/CocoaTouch Adaptation: </br> 
 NSInvocation (cannot be used in Swift because of the different ways that Swift and Objective-C invoke methods), NSUndoManager (Cocoa).
 
-### Implementation (see full implementation in Command demo project)
+### Implementation </br> 
+##### (see full implementation in Command demo project)
 ```swift
 protocol CommandProtocol {
     func execute(on receiver: AnyObject)
@@ -134,6 +135,256 @@ struct CollectionCellViewModelFactory {
     }
 ```
 
+## Facade
+> Provides higher level interface to reduce the complexity of a subsystem so that common tasks can be performed more easily and the complexity required to use the API is consolidated in one part of the application.</br> 
+
+#### Cocoa/CocoaTouch Adaptation: </br> 
+NSCopiyng, NSImage</br> 
+
+### Implementation
+##### (see full implementation in Command demo project)
+
+```swift
+/* Facade over 3 modules
+ * 1. RemoteImageProvider: downloads images from web.
+ * 2. ImageDataProvider: generates image data representation (png/jpeg).
+ * 3. DiskManager: helps to save/retrieve/remove downloaded images from disk.
+ */
+
+protocol ImageAPIProtocol {
+    func saveRemoteImage(url: URL, name: String, format: ImageFormat, shouldOverwrite: Bool, callback: @escaping (Result<URL>) -> Void)
+    func getSavedImageURLs() -> [URL]
+    func retrieveSavedImage(with url: URL) -> UIImage?
+    func removeSavedImages()
+}
+
+final class ImageAPIFacade: ImageAPIProtocol {
+    
+    private let loader = RemoteImageProvider()
+    private let dataRepresentationProvider = ImageDataProvider()
+    private let diskManager = DiskManager()
+    
+    func saveRemoteImage(url: URL, name: String, format: ImageFormat, shouldOverwrite: Bool = true, callback: @escaping (Result<URL>) -> Void)  {
+        let savePath: URL = diskManager.saveDirectory.appendingPathComponent("\(name)")
+
+        _ = loader.load(from: url, callback: { result in
+            do {
+                let image = try result.unwrap()
+                let data = try self.dataRepresentationProvider.data(from: image, withFormat: format).unwrap()
+                let writingOptions: Data.WritingOptions = shouldOverwrite ? .atomic : .withoutOverwriting
+                try data.write(to: savePath, options: writingOptions)
+                
+                callback(.success(savePath))
+                
+            } catch let err {
+                callback(.fail(err))
+            }
+        })
+    }
+    
+    func getSavedImageURLs() -> [URL] {
+        return diskManager.getSavedImageURLs()
+    }
+    
+    func retrieveSavedImage(with url: URL) -> UIImage? {
+        var image: UIImage?
+        if let data = try? Data(contentsOf: url), let imageFromData = UIImage(data: data) {
+            image = imageFromData
+        }
+        return image
+    }
+    
+    func removeSavedImages() {
+        diskManager.removeSavedImages()
+    }
+}
+```
+
+```swift
+/* Facade submodules implementations: */
+
+/* 1 */
+protocol RemoteImageLoaderProtocol {
+    func load(from url: URL, callback: @escaping (Result<UIImage>) -> Void) -> URLSessionTask
+}
+
+struct RemoteImageProvider: RemoteImageLoaderProtocol {
+    private let session: URLSession
+    
+    init(session: URLSession = URLSession(configuration: .default)) {
+        self.session = session
+    }
+    
+    func load(from url: URL, callback: @escaping (Result<UIImage>) -> Void) -> URLSessionTask {
+        let task = session.dataTask(with: url) { (data, urlResponse, error) in
+            guard let data = data, let image = UIImage(data: data) else {
+                DispatchQueue.main.async {
+                    let error = ImageAPIError.failedLoadingFromNetwork(error)
+                    callback(.fail(error))
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                callback(.success(image))
+            }
+        }
+        task.resume()
+        return task
+    }
+}
+
+/* 2 */
+enum ImageFormat {
+    case png
+    /* quality: CGFloat
+     * value 0.0 represents the maximum compression (or lowest quality)
+     * value 1.0 represents the least compression (or best quality).
+     */
+    case jpeg(quality: CGFloat)
+}
+
+struct ImageDataProvider {
+    func data(from image: UIImage, withFormat format: ImageFormat) -> Result<Data> {
+        switch format {
+        case .jpeg(let quality):
+            return generateJPEGRepresentationData(from: image, compressionQuality: quality)
+        case .png:
+            return generatePNGRepresentationData(from: image)
+        }
+    }
+    
+    private func generateJPEGRepresentationData(from image: UIImage, compressionQuality: CGFloat) -> Result<Data> {
+        guard let data = UIImageJPEGRepresentation(image, compressionQuality) else {
+            let error = ImageAPIError.failedGettingDataRepresentation(.jpeg(quality: compressionQuality))
+            return .fail(error)
+        }
+        return .success(data)
+    }
+    
+    private func generatePNGRepresentationData(from image: UIImage) -> Result<Data> {
+        guard let data = UIImagePNGRepresentation(image) else {
+            let error = ImageAPIError.failedGettingDataRepresentation(.png)
+            return .fail(error)
+        }
+        return .success(data)
+    }
+}
+
+/* 3 */
+struct DiskManager {
+    
+    private let fileManager = FileManager.default
+    
+    var saveDirectory: URL {
+        return fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+    }
+    
+    var saveDirectoryContents: [String] {
+        var contents = [String]()
+        do {
+            contents = try fileManager.contentsOfDirectory(atPath: saveDirectory.relativePath)
+            
+        } catch let error {
+            print(error)
+        }
+        return contents
+    }
+    
+    func getSavedImageURLs() -> [URL] {
+        return saveDirectoryContents.flatMap {
+            return saveDirectory.appendingPathComponent($0)
+            }
+            .filter {
+                $0.absoluteString.hasSuffix(".jpg")
+        }
+    }
+    
+    func removeSavedImages() {
+        getSavedImageURLs().forEach {
+            if $0.absoluteString.hasSuffix(".jpg") {
+                try? fileManager.removeItem(at: $0)
+            }
+        }
+    }
+}
+```
+
+### Usage:
+```swift
+class ViewController: UIViewController {
+    
+    @IBOutlet weak var wikiURLsPickerView: UIPickerView!
+    @IBOutlet weak var savedImagesPickerView: UIPickerView!
+    @IBOutlet weak var imageView: UIImageView!
+    
+    private let imageAPIFacade = ImageAPIFacade()
+    private let remoteImagePickerHandler = RemoteImagePickerHandler()
+    private let savedImagePickerHandler = SavedImagePickerHandler()
+    
+    private var pickedRemoteImageURL: URL!
+    private var pickedSavedImageURL: URL?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        cleanup()
+        setup()
+        updateSavedImagesPicker()
+    }
+    
+    private func setup() {
+        imageView.contentMode = .scaleAspectFill
+        pickedRemoteImageURL = remoteImagePickerHandler.defaultImagePickerURL()
+        wikiURLsPickerView.delegate = remoteImagePickerHandler
+        wikiURLsPickerView.dataSource = remoteImagePickerHandler
+        savedImagesPickerView.delegate = savedImagePickerHandler
+        savedImagesPickerView.dataSource = savedImagePickerHandler
+        remoteImagePickerHandler.delegate = self
+        savedImagePickerHandler.delegate = self
+    }
+    
+    private func cleanup() {
+        imageAPIFacade.removeSavedImages()
+    }
+    
+    private func updateSavedImagesPicker() {
+        savedImagePickerHandler.urls = imageAPIFacade.getSavedImageURLs()
+        savedImagesPickerView.reloadAllComponents()
+        if savedImagePickerHandler.urls.isEmpty == false {
+            pickedSavedImageURL =  savedImagePickerHandler.urls.first
+        }
+    }
+}
+
+extension ViewController {
+    @IBAction func saveRemoteImageToDiskDidTouchUpInside(_ sender: UIButton) {
+        let name = pickedRemoteImageURL.imageName()
+        let format: ImageFormat = .jpeg(quality: 0.8)
+        imageAPIFacade.saveRemoteImage(url: pickedRemoteImageURL, name: name, format: format, shouldOverwrite: true, callback: { [weak self] result in
+            print(result.debugDescription)
+            self?.updateSavedImagesPicker()
+        })
+    }
+    
+    @IBAction func showSavedImageDidTouchUpInside(_ sender: UIButton) {
+        guard let url = pickedSavedImageURL else {
+            return
+        }
+        imageView.image = imageAPIFacade.retrieveSavedImage(with: url)
+    }
+}
+
+extension ViewController: PickerViewDelegate {
+    func pickerViewDidSelect(row: Int, pickerType: PickerImagesType) {
+        switch pickerType {
+        case .remote:
+            let remoteURL = remoteImagePickerHandler.getURL(for: row)
+            if let url = remoteURL { pickedRemoteImageURL = url }
+        case .local:
+            pickedSavedImageURL = savedImagePickerHandler.urls[row]
+        }
+    }
+}
+```
 
 ## Factory Method (Virtual Constructor)
  > Factory Method is used when there are several classes that implement a common protocol or share a common base class.
@@ -146,7 +397,7 @@ struct CollectionCellViewModelFactory {
     [Factory Method](https://en.wikipedia.org/wiki/Factory_method_pattern)  in Wikipedia. </br>
 
 #### Cocoa/CocoaTouch Adaptation: </br> 
-NSData/Data, Date/NSDate
+Convenience class-methods in NSNumber.
 
 ### Implementation
 
@@ -264,7 +515,6 @@ extension PoppingLayer: Animatable {
 ```
 
 ### Usage:
-##### Adding layers on ViewController view's layer and animating
 
 ```swift
 class ViewController: UIViewController {
