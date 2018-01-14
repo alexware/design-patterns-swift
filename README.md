@@ -1,6 +1,138 @@
 # Implementing native (and not very native) iOS Design Patterns in Swift 4 ;]
 
-The aim is to showcase 'real-world' design patterns implementations (or close to that) instead of abstaract bullshit (the ones with Shapes, Food, Animals etc.) ;]
+The aim is to showcase 'real-world' design patterns implementations (or close to that) instead of abstaract bullshit (the ones with Shapes, Food, Animals etc.) ;] Some of the code is omitted for brevity.
+
+## Command
+> Pattern is used to incapsulate an operation (parameters required to execute the operation) so that it can be invoked later or by a different component. </br> 
+
+#### Cocoa/CocoaTouch Adaptation: </br> 
+NSInvocation (cannot be used in Swift because of the different ways that Swift and Objective-C invoke methods), NSUndoManager (Cocoa).
+
+### Implementation (see full implementation in Command demo project)
+```swift
+protocol CommandProtocol {
+    func execute(on receiver: AnyObject)
+}
+
+class Command<T>: CommandProtocol {
+    
+    private var instructions: ((T) -> Void)?
+    
+    init() {
+        instructions = nil
+    }
+    
+    init(_ instructions: @escaping (T) -> Void) {
+        self.instructions = instructions
+    }
+    
+    func execute(on receiver: AnyObject) {
+        guard receiver is T else {
+            fatalError("\(#file), \(#function), \(#line): Receiver is of unsupported type!")
+        }
+        instructions?(receiver as! T)
+    }
+}
+
+/* Command subclasses: */
+
+class CollectionCellConfigurationCommand: Command<CollectionViewCell> {
+    
+    private let networkClient: NetworkImageLoaderProtocol
+    private var task: URLSessionTaskProtocol?
+    private let imageURL: URL
+    
+    init(title: String, networkClient: NetworkImageLoaderProtocol = ImageNetworkClient(), imageURL: URL) {
+        
+        self.networkClient = networkClient
+        self.imageURL = imageURL
+        
+        super.init { cell in
+            cell.titleLabel.text = title
+        }
+    }
+    
+    override func execute(on receiver: AnyObject) {
+        super.execute(on: receiver)
+        
+        guard let cell = receiver as? CollectionViewCell else {
+            return
+        }
+
+        task = networkClient.request(url: imageURL) { downloadedImage in
+            cell.imageView.image = downloadedImage
+        }
+    }
+    
+    func cancel() {
+        task?.cancel()
+    }
+}
+
+class CollectionCellSelectionCommand: Command<CollectionViewCell> {
+    
+    private let application: UIApplication
+    private let pageURL: URL
+    
+    init(pageURL: URL, application: UIApplication) {
+        self.application = application
+        self.pageURL = pageURL
+        
+        super.init { cell in
+            // ...
+        }
+    }
+    
+    override func execute(on receiver: AnyObject) {
+        super.execute(on: receiver)
+        
+        if application.canOpenURL(pageURL) {
+            application.open(pageURL, options: [:], completionHandler: nil)
+        }
+    }
+}
+```
+
+### Usage:
+```swift
+struct CollectionCellViewModelFactory {
+    
+    func create(with photoData: PhotoData) -> CollectionCellViewModel {
+        
+        let contentSize = CGSize(width: 360, height: 280)
+        var commands = [CollectionCellViewModel.CommandKey: CommandProtocol]()
+
+        /* Configuration */
+        commands[.configuration] = CollectionCellConfigurationCommand(title: photoData.title, imageURL: photoData.imageURL)
+        
+        /* Selection */
+        commands[.selection]     = CollectionCellSelectionCommand(pageURL: photoData.pageURL, application: UIApplication.shared)
+        
+        /* For Deselection no specific subclass, using generic Command */
+        commands[.deselection]   = Command<CollectionViewCell> { cell in
+            // ...
+        }
+        
+        let viewmodel = CollectionCellViewModel(reuseIdentifier: CollectionViewCell.identifier,
+                                                contentSize: contentSize,
+                                                commands: commands)
+        return viewmodel
+    }
+}
+
+/* UICollectionViewDatasource example: */
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let viewModel = cellViewModels[indexPath.item]
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: viewModel.reuseIdentifier,
+                                                            for: indexPath) as? CollectionViewCell else { return UICollectionViewCell() }
+        viewModel
+            .commands[CollectionCellViewModel.CommandKey.configuration]?
+            .execute(on: cell)
+        
+        return cell
+    }
+```
 
 
 ## Factory Method (Virtual Constructor)
