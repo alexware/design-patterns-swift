@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Facade" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wee-PX-Ex0">
+                                <rect key="frame" x="0.0" y="451" width="188" height="216"/>
+                            </pickerView>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S4X-D8-43h">
+                                <rect key="frame" x="188" y="451" width="187" height="216"/>
+                            </pickerView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fts-lZ-g0e">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="355"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z29-HV-0Ec">
+                                <rect key="frame" x="92.5" y="401" width="190" height="30"/>
+                                <state key="normal" title="Save Remote Image To Disk"/>
+                                <connections>
+                                    <action selector="saveRemoteImageToDiskDidTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kEH-rz-qfQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FjY-pW-UFb">
+                                <rect key="frame" x="122.5" y="363" width="130" height="30"/>
+                                <state key="normal" title="Show Saved Image"/>
+                                <connections>
+                                    <action selector="showSavedImageDidTouchUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wcv-Ls-J63"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remote Images:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G7a-RS-rYn">
+                                <rect key="frame" x="47.5" y="451.5" width="93.5" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved Images:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7I-3H-Za2">
+                                <rect key="frame" x="239.5" y="454.5" width="84.5" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="S4X-D8-43h" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="5DG-od-cQw"/>
+                            <constraint firstItem="Wee-PX-Ex0" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" multiplier="0.5" id="913-nD-0a0"/>
+                            <constraint firstItem="Fts-lZ-g0e" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ERb-Xp-tlW"/>
+                            <constraint firstItem="S4X-D8-43h" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" multiplier="1.5" id="FO9-6t-6H9"/>
+                            <constraint firstItem="Wee-PX-Ex0" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="MuD-EX-2g2"/>
+                            <constraint firstItem="Wee-PX-Ex0" firstAttribute="top" secondItem="G7a-RS-rYn" secondAttribute="bottom" constant="-15" id="MuY-RD-ZfZ"/>
+                            <constraint firstItem="G7a-RS-rYn" firstAttribute="centerX" secondItem="Wee-PX-Ex0" secondAttribute="centerX" id="ONe-Mb-29d"/>
+                            <constraint firstItem="z29-HV-0Ec" firstAttribute="top" secondItem="FjY-pW-UFb" secondAttribute="bottom" constant="8" id="Tvr-m7-cxS"/>
+                            <constraint firstItem="Fts-lZ-g0e" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="UgV-EF-PJ4"/>
+                            <constraint firstItem="z29-HV-0Ec" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cYB-Ya-U4B"/>
+                            <constraint firstItem="FjY-pW-UFb" firstAttribute="top" secondItem="Fts-lZ-g0e" secondAttribute="bottom" constant="8" id="eYw-mD-a2X"/>
+                            <constraint firstItem="j7I-3H-Za2" firstAttribute="centerX" secondItem="S4X-D8-43h" secondAttribute="centerX" id="nBL-Qc-GRn"/>
+                            <constraint firstItem="S4X-D8-43h" firstAttribute="top" secondItem="j7I-3H-Za2" secondAttribute="bottom" constant="-18" id="nE7-rz-dgc"/>
+                            <constraint firstItem="S4X-D8-43h" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="qb9-Jf-3eg"/>
+                            <constraint firstItem="FjY-pW-UFb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ttD-Fr-NW3"/>
+                            <constraint firstItem="Wee-PX-Ex0" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ufU-ZJ-eV9"/>
+                            <constraint firstItem="Fts-lZ-g0e" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="wZR-gh-UWy"/>
+                            <constraint firstItem="Wee-PX-Ex0" firstAttribute="top" secondItem="z29-HV-0Ec" secondAttribute="bottom" constant="20" id="xMO-qy-gqY"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="Fts-lZ-g0e" id="krb-7k-ahB"/>
+                        <outlet property="savedImagesPickerView" destination="S4X-D8-43h" id="pMl-1d-yxI"/>
+                        <outlet property="wikiURLsPickerView" destination="Wee-PX-Ex0" id="vHg-hw-L3C"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="116" y="118.29085457271366"/>
+        </scene>
+    </scenes>
+</document>
