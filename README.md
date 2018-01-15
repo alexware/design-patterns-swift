@@ -1,6 +1,6 @@
 # Implementing Design Patterns in Swift 4 ;]
 
-The aim is to showcase 'real-world' design patterns implementations (or close) instead of abstract definitions and examples (Foo/Bar/Baz, Shapes/Food/Animals etc.) ;] Note: some of the code is omitted for brevity check out playground/project to see full implementation.
+Note: some of the code is omitted for brevity check out playground/project to see full implementation.
 
 ## Command
 > Pattern is used to incapsulate an operation (parameters required to execute the operation) so that it can be invoked later or by a different component. </br> 
