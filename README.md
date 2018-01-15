@@ -641,7 +641,7 @@ class EmberMMU: MMU {}
 class EnginolaMMU: MMU {}
 
 protocol AbstractFactory {
-    func getFactory(_ arch: Architecture) -> ToolKitFactory
+    func factory(_ arch: Architecture) -> ToolKitFactory
 }
 
 protocol ToolKitFactory {
@@ -653,7 +653,7 @@ final class HardwareFactory: AbstractFactory {
     private let emberToolkit = EmberToolkit()
     private let enginolaToolkit = EnginolaToolkit()
     
-    func getFactory(_ arch: Architecture) -> ToolKitFactory {
+    func factory(_ arch: Architecture) -> ToolKitFactory {
         switch arch {
         case .ember:
             return emberToolkit
@@ -688,11 +688,11 @@ final class EnginolaToolkit: ToolKitFactory {
 ```swift
 let abstractFactory: AbstractFactory = HardwareFactory()
 
-let emberCPU = abstractFactory.getFactory(.ember).createCPU()
-let emberMMU = abstractFactory.getFactory(.ember).createMMU()
+let emberCPU = abstractFactory.factory(.ember).createCPU()
+let emberMMU = abstractFactory.factory(.ember).createMMU()
 
-let enginolaCPU = abstractFactory.getFactory(.enginola).createCPU()
-let enginolaMMU = abstractFactory.getFactory(.enginola).createMMU()
+let enginolaCPU = abstractFactory.factory(.enginola).createCPU()
+let enginolaMMU = abstractFactory.factory(.enginola).createMMU()
 ```
 
 ## Class Cluster
