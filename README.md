@@ -613,10 +613,90 @@ class ViewController: UIViewController {
 }
 
 ```
+
+## Abstract Factory 
+> Allows a calling component to obtain a family or group of related objects without needing to know which classes were used to create them. </br>
+
+#### Cocoa/CocoaTouch Adaptation:
+Not sure which cocoa/cocoa touch classes adopt the pattern (many adopt the Class Cluster which is very similar but can only be implemented in Objective-C though). </br>
+
+### Implementation
+```swift
+
+import Foundation
+
+enum Architecture {
+    case enginola
+    case ember
+}
+
+protocol CPU {}
+
+class EmberCPU: CPU {}
+class EnginolaCPU: CPU {}
+
+protocol MMU {}
+
+class EmberMMU: MMU {}
+class EnginolaMMU: MMU {}
+
+protocol AbstractFactory {
+    func getFactory(_ arch: Architecture) -> ToolKitFactory
+}
+
+protocol ToolKitFactory {
+    func createCPU() -> CPU
+    func createMMU() -> MMU
+}
+
+final class HardwareFactory: AbstractFactory {
+    private let emberToolkit = EmberToolkit()
+    private let enginolaToolkit = EnginolaToolkit()
     
+    func getFactory(_ arch: Architecture) -> ToolKitFactory {
+        switch arch {
+        case .ember:
+            return emberToolkit
+        case .enginola:
+            return enginolaToolkit
+        }
+    }
+}
+
+final class EmberToolkit: ToolKitFactory {
+    func createCPU() -> CPU {
+        return EmberCPU()
+    }
+    
+    func createMMU() -> MMU {
+        return EmberMMU()
+    }
+}
+
+final class EnginolaToolkit: ToolKitFactory {
+    func createCPU() -> CPU {
+        return EnginolaCPU()
+    }
+    
+    func createMMU() -> MMU {
+        return  EnginolaMMU()
+    }
+}
+```
+
+### Usage:
+```swift
+let abstractFactory: AbstractFactory = HardwareFactory()
+
+let emberCPU = abstractFactory.getFactory(.ember).createCPU()
+let emberMMU = abstractFactory.getFactory(.ember).createMMU()
+
+let enginolaCPU = abstractFactory.getFactory(.enginola).createCPU()
+let enginolaMMU = abstractFactory.getFactory(.enginola).createMMU()
+```
 
 ## Class Cluster
- > A class cluster an architecture that groups a number of private, concrete subclasses under a public, abstract superclass (pattern based on Abstract Factory).
+ > Architecture that groups a number of private, concrete subclasses under a public, abstract superclass (pattern based on Abstract Factory).
 Class cluster is actually a specific implementation of a factory but the initialiser is used instead of the Factory Method to decide what instance to return. Also Factories are used to create instances implementing a protocol while Class Cluster is only suitable for creation of subclasses of an Abstract Class.
  
 However Class Clusters can only be implemented in Objective-C. Unlike Objective-C (where we can just replace 'self' in init method, and return proper subclass object based on the input type) when we call init method of a class we get only instance of that particular class in Swift...so we can't rely on the init method to construct a Class Cluster. A substitution whould be to use a Factory instead.
