@@ -931,156 +931,135 @@ NSAttributedString, NSScrollView, and UIDatePicker </br>
 
 ### Implementation 
 ```swift
-struct Article {
-    let id: String
+import UIKit
+
+enum ProductCategory {
+    case techMobile
+    case techAccessories
+    case techComputerAndOffice
+    case techConsumerElectronics
+    case techHomeImprovement
+    case clothesWomen
+    case clothesMen
+    case clothesKids
+    case toys
+}
+
+protocol ProductProtocol {
+    var name: String { get }
+    var description: String { get }
+    var category: ProductCategory { get }
+    var price: Double { get }
+}
+
+class Product: ProductProtocol {
+    
     let name: String
-    let data: [String: String]
-    let rating: Int
-    let viewCount: Int
-}
-
-enum ArticleType {
-    case blog, news
-}
-
-enum Result<T> {
-    case result(T); case error(Error)
-}
-
-protocol HTTPClient {
-    /* http client interface...
-     */
-}
-
-class ArticleAPIClient: HTTPClient {
-    /* http client implementation (with URLSession for ex.)
-     * init with base url, GET/POST/UPDATE...standard stuff
-     */
-}
-
-protocol ArticleServiceProtocol {
-    var client: HTTPClient { get }
-    /* For demonstration of this pattern service wiil just download data */
-    func load(byID id: String) -> Result<Article>
-    func load(withQuery query: String) -> Result<[Article]>
-    /*
-    func create(article: Article) -> Result<Bool>
-    func remove(byID id: String) -> Result<Bool>
-    func update(byID id: String, article: Article) -> Result<Bool>
-     */
-}
-
-class NewsArticleService: ArticleServiceProtocol {
-    let client: HTTPClient
+    let category: ProductCategory
     
-    init(with httpClient: HTTPClient) {
-        self.client = httpClient
+    var description: String {
+        get { return _description }
     }
     
-    func load(withQuery query: String) -> Result<[Article]> {
-        return .result([])
+    var price: Double {
+        get { return _price }
     }
     
-    func load(byID id: String) -> Result<Article> {
-        let dummyArticle = Article(id: "news.article.000001", name: "Tech News 01", data: [:], rating: 100, viewCount: 300)
-        return .result(dummyArticle)
+    private let _description: String
+    private let _price: Double
+    
+    init(name: String, description: String, category: ProductCategory, price: Double) {
+        self.name = name
+        self.category = category
+        self._description = description
+        self._price = price
     }
 }
 
-class BlogArticleService: ArticleServiceProtocol {
-    let client: HTTPClient
+class ProductPriceDecorator: Product {
+    let baseProduct: Product
     
-    init(with httpClient: HTTPClient) {
-        self.client = httpClient
-    }
-    
-    func load(byID id: String) -> Result<Article> {
-        let dummyArticle = Article(id: "blog.article.000020", name: "Blog Article 20", data: [:], rating: 100, viewCount: 300)
-        return .result(dummyArticle)
-    }
-    
-    func load(withQuery query: String) -> Result<[Article]> {
-        return .result([])
+    init(_ baseProduct: Product) {
+        self.baseProduct = baseProduct
+        super.init(name: baseProduct.name, description: baseProduct.description, category: baseProduct.category, price: baseProduct.price)
     }
 }
 
-enum ArticleCount: Int {
-    case ten = 10; case twenty = 20; case fifty = 50
-}
+class ProductBlackFridayDecorator: ProductPriceDecorator {
+    override var description: String {
+        return baseProduct.description + "This is Black Friday! Discount: \(baseProduct.price - price) $"
+    }
+    
+    override var price: Double {
+        var price = baseProduct.price
 
-enum ArticleGradationType {
-    case rating, views
-}
+        switch category {
 
-protocol TopArticleDecoratorProtocol {
-    func loadTopRated(count: ArticleCount) -> Result<[Article]>
-    func loadMostViewed(count: ArticleCount) -> Result<[Article]>
-}
+        case .techMobile:
+            price = price * 0.95
 
-class TopBlogArticleServiceDecorator: TopArticleDecoratorProtocol {
-    
-    let base: BlogArticleService
-    
-    init(with baseService: BlogArticleService) {
-        self.base = baseService
-    }
-    
-    func loadTopRated(count: ArticleCount) -> Result<[Article]> {
-        let query = SQLConstructor.makeQuery(object: "BlogArticle", orderBy: .rating, limit: count)
-        return base.load(withQuery: query)
-    }
-    
-    func loadMostViewed(count: ArticleCount) -> Result<[Article]> {
-        let query = SQLConstructor.makeQuery(object: "BlogArticle", orderBy: .views, limit: count)
-        return base.load(withQuery: query)
-    }
-}
+        case .techAccessories:
+            price = price * 0.65
 
-class TopNewsArticleServiceDecorator: TopArticleDecoratorProtocol {
-    
-    let base: NewsArticleService
-    
-    init(with baseService: NewsArticleService) {
-        self.base = baseService
-    }
-    
-    func loadTopRated(count: ArticleCount) -> Result<[Article]> {
-        let query = SQLConstructor.makeQuery(object: "NewsArticle", orderBy: .rating, limit: count)
-        return base.load(withQuery: query)
-    }
-    
-    func loadMostViewed(count: ArticleCount) -> Result<[Article]> {
-        let query = SQLConstructor.makeQuery(object: "NewsArticle", orderBy: .views, limit: count)
-        return base.load(withQuery: query)
+        case .techComputerAndOffice, .techConsumerElectronics, .techHomeImprovement:
+            price = price * 0.95
+
+        case .clothesWomen:
+            price = price * 0.60
+
+        case .clothesMen:
+            price = price * 0.90
+
+        case .clothesKids:
+            price = price * 0.60
+
+        case .toys:
+            price = price * 0.80
+        }
+        return price
     }
 }
 
-struct SQLConstructor {
-    static func makeQuery(object: String, orderBy gradationType: ArticleGradationType, limit: ArticleCount) -> String {
-        // construct something like:
-        return "SELECT \(object) FROM ... ORDER BY \(gradationType) LIMIT \(limit)"
+class ProductCyberMondayDecorator: ProductPriceDecorator {
+    override var description: String {
+        return baseProduct.description + "Discounts for ALL! Happy Cyber Monday!"
+    }
+    
+    override var price: Double {
+        var price = baseProduct.price
+
+        switch category {
+
+        case .techMobile:
+            price = price * 0.80
+
+        case .techAccessories:
+            price = price * 0.50
+
+        case .techComputerAndOffice, .techConsumerElectronics:
+            price = price * 0.75
+
+        case .techHomeImprovement:
+            price = price * 0.85
+
+        default:
+            break
+        }
+        return price
     }
 }
-
-let articleAPIClient: HTTPClient = ArticleAPIClient()
-
-let baseNewsArticleService = NewsArticleService(with: articleAPIClient)
-let baseBlogArticleService = BlogArticleService(with: articleAPIClient)
 ```
 
 ### Usage:
 ```swift
-// lets get some top stuff:
-let topNewsService = TopNewsArticleServiceDecorator(with: baseNewsArticleService)
-let topBlogService = TopBlogArticleServiceDecorator(with: baseBlogArticleService)
+let iPhoneX = Product(name: "iPhoneX", description: "Has animated 'shit' emoji!", category: .techMobile, price: 1800)
+let iPhoneXBlackFridayDecorator = ProductBlackFridayDecorator(iPhoneX)
+let iPhoneXCyberMondayDecorator = ProductCyberMondayDecorator(iPhoneX)
 
-// top news articles
-topNewsService.loadTopRated(count: .ten)
-topNewsService.loadMostViewed(count: .twenty)
-
-// top blog posts
-topBlogService.loadTopRated(count: .ten)
-topBlogService.loadMostViewed(count: .fifty)
+let blPrice = iPhoneXBlackFridayDecorator.price
+let blDescription = iPhoneXBlackFridayDecorator.description
+let cmPrice = iPhoneXCyberMondayDecorator.price
+let cmDescription = iPhoneXCyberMondayDecorator.description
 ```
 
 ## Prototype
