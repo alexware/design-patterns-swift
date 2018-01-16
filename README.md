@@ -987,7 +987,7 @@ class ProductPriceDecorator: Product {
 
 class ProductBlackFridayDecorator: ProductPriceDecorator {
     override var description: String {
-        return baseProduct.description + "This is Black Friday! Discount: \(baseProduct.price - price) $"
+        return baseProduct.description + " This is Black Friday! Discount: \(baseProduct.price - price) $"
     }
     
     override var price: Double {
@@ -999,22 +999,22 @@ class ProductBlackFridayDecorator: ProductPriceDecorator {
             price = price * 0.95
 
         case .techAccessories:
-            price = price * 0.65
+            price = price * 0.80
 
         case .techComputerAndOffice, .techConsumerElectronics, .techHomeImprovement:
-            price = price * 0.95
+            price = price * 0.98
 
         case .clothesWomen:
-            price = price * 0.60
+            price = price * 0.70
 
         case .clothesMen:
-            price = price * 0.90
+            price = price * 0.95
 
         case .clothesKids:
-            price = price * 0.60
+            price = price * 0.85
 
         case .toys:
-            price = price * 0.80
+            price = price * 0.94
         }
         return price
     }
@@ -1022,7 +1022,7 @@ class ProductBlackFridayDecorator: ProductPriceDecorator {
 
 class ProductCyberMondayDecorator: ProductPriceDecorator {
     override var description: String {
-        return baseProduct.description + "Discounts for ALL! Happy Cyber Monday!"
+        return baseProduct.description + " Discounts for ALL! Happy Cyber Monday! Discount: \(baseProduct.price - price) $"
     }
     
     override var price: Double {
@@ -1031,16 +1031,16 @@ class ProductCyberMondayDecorator: ProductPriceDecorator {
         switch category {
 
         case .techMobile:
-            price = price * 0.80
+            price = price * 0.90
 
         case .techAccessories:
-            price = price * 0.50
+            price = price * 0.65
 
         case .techComputerAndOffice, .techConsumerElectronics:
-            price = price * 0.75
+            price = price * 0.86
 
         case .techHomeImprovement:
-            price = price * 0.85
+            price = price * 0.95
 
         default:
             break
@@ -1058,6 +1058,7 @@ let iPhoneXCyberMondayDecorator = ProductCyberMondayDecorator(iPhoneX)
 
 let blPrice = iPhoneXBlackFridayDecorator.price
 let blDescription = iPhoneXBlackFridayDecorator.description
+
 let cmPrice = iPhoneXCyberMondayDecorator.price
 let cmDescription = iPhoneXCyberMondayDecorator.description
 ```
