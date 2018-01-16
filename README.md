@@ -135,6 +135,176 @@ struct CollectionCellViewModelFactory {
     }
 ```
 
+## Chain Of Responsibility
+> Used to chain the receiving objects and pass the request along the chain until an object handles it.
+
+#### Cocoa/CocoaTouch Adaptation: </br>
+UIResponder/NSResponder </br>
+
+### Implementation
+```swift
+enum EngineerLevel: Int {
+    case junior = 0, middle, senior
+}
+
+extension EngineerLevel: Comparable {
+    static func < (lhs: EngineerLevel, rhs: EngineerLevel) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    static func == (lhs: EngineerLevel, rhs: EngineerLevel) -> Bool {
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+protocol JiraItem {
+    var code: String { get }
+    var description: String { get }
+    var levelOfCompetency: EngineerLevel { get }
+    var completed: Bool { get }
+    func close(_ comment: String)
+}
+
+final class Task: JiraItem {
+    let code: String
+    let description: String
+    let levelOfCompetency: EngineerLevel
+    var completed: Bool {
+        return _completed
+    }
+    
+    private var _completed: Bool = false
+    
+    init(code: String, description: String, levelOfCompetency: EngineerLevel) {
+        self.code = code
+        self.description = description
+        self.levelOfCompetency = levelOfCompetency
+    }
+    
+    func close(_ message: String) {
+        _completed = true
+        print(message)
+    }
+}
+
+final class SoftwareEngineer {
+    let name: String
+    let level: EngineerLevel
+    var isDeveloping: Bool = false
+    
+    init(name: String, level: EngineerLevel) {
+        self.name = name
+        self.level = level
+    }
+    
+    func resolve(_ task: JiraItem) -> Bool {
+        guard !isDeveloping else {
+            assert(false, "Something wrong here! Developer is working on another ticket.")
+        }
+        guard task.levelOfCompetency <= level else {
+            assert(false, "Something wrong here! Developer is not qualified enough.")
+        }
+        isDeveloping = true
+        print("\(name), iOS \(level) Developer has started \(task.code).")
+        task.close("\(task.description) (\(task.code)) was merged into Dev branch.")
+        return true
+    }
+}
+
+final class EngineeringTeam {
+    var level: EngineerLevel
+    var engineers: [SoftwareEngineer]
+    var higherCompetencyTeam: EngineeringTeam?
+    
+    init(engineers: [SoftwareEngineer], level: EngineerLevel, higherCompetencyTeam: EngineeringTeam?) {
+        self.engineers = engineers
+        self.level = level
+        self.higherCompetencyTeam = higherCompetencyTeam
+    }
+    
+    func tryToResolve(_ task: JiraItem) -> Bool {
+        if task.levelOfCompetency > level || !hasAvailableSoftwareEngineers {
+            if let team = higherCompetencyTeam {
+                return team.tryToResolve(task)
+            } else {
+                print("No team member available.")
+                return false
+            }
+        } else {
+            if let availableSoftwareEngineer = availableSoftwareEngineer {
+                return availableSoftwareEngineer.resolve(task)
+            }
+            assert(false, "Something went wrong!")
+        }
+    }
+    
+    private var availableSoftwareEngineer: SoftwareEngineer? {
+        return engineers.filter({ $0.isDeveloping == false }).first
+    }
+    
+    private var hasAvailableSoftwareEngineers: Bool {
+        return engineers.filter({ $0.isDeveloping == false }).count > 0
+    }
+}
+
+final class ITOutsorcingCompany {
+    private var engineers: EngineeringTeam
+    
+    init(engineers: EngineeringTeam) {
+        self.engineers = engineers
+    }
+    
+    func resolve(_ task: JiraItem) -> Bool {
+        return engineers.tryToResolve(task)
+    }
+}
+```
+
+### Usage
+```swift
+/* Lets build the team: */
+
+/* Here comes the cavalry */
+let s1 = SoftwareEngineer(name: "Alex", level: .senior)
+let s2 = SoftwareEngineer(name: "Volodya", level: .senior)
+let s3 = SoftwareEngineer(name: "Petro", level: .senior)
+
+let seniors = EngineeringTeam(engineers: [s1, s2, s3], level: .senior, higherCompetencyTeam: nil)
+
+/* Ah, the work horses. Let's pop some tickets! */
+let m1 = SoftwareEngineer(name: "Andrii", level: .middle)
+let m2 = SoftwareEngineer(name: "Vitalii", level: .middle)
+let m3 = SoftwareEngineer(name: "Dima", level: .middle)
+
+let middles = EngineeringTeam(engineers: [m1, m2, m3], level: .middle, higherCompetencyTeam: seniors)
+
+/* Juniors fresh from galera's 'Base Camp' to sink the ship...Ahoy! */
+let j1 = SoftwareEngineer(name: "Kyrylo", level: .junior)
+let j2 = SoftwareEngineer(name: "Mykyta", level: .junior)
+let j3 = SoftwareEngineer(name: "Pavlo", level: .junior)
+
+let juniors = EngineeringTeam(engineers: [j1, j2, j3], level: .junior, higherCompetencyTeam: middles)
+
+/* Let's throw in some work for the guys: */
+let backlog: [JiraItem] = [
+    Task(code: "GAL-757", description: "Fix layout", levelOfCompetency: .junior),
+    Task(code: "GAL-990", description: "Custom network protocol implementation", levelOfCompetency: .senior),
+    Task(code: "GAL-932", description: "Fix database concurrency issue", levelOfCompetency: .senior),
+    Task(code: "GAL-1003", description: "Develop complex UI component", levelOfCompetency: .middle),
+    Task(code: "GAL-994", description: "Fix crash on tableView", levelOfCompetency: .junior),
+    Task(code: "GAL-790", description: "Change button color", levelOfCompetency: .junior),
+    Task(code: "GAL-852", description: "Fix UI component offsets", levelOfCompetency: .junior),
+    Task(code: "GAL-1001", description: "Integrate Analitics", levelOfCompetency: .middle)
+]
+
+/* Work!  */
+backlog.forEach {
+    
+    /* Will resolve task or find more competent mate and hand it over */
+    juniors.tryToResolve(task)
+}
+```
+
 ## Iterator
 > Used to traverse a container and access the container's elements.</br> 
 
@@ -146,10 +316,6 @@ IteratorProtocol </br>
 struct Instruction {
     let name: String
 }
-
-/* IteratorProtocol to the next element and returns it, or `nil` if no next element
- * exists.
- */
 
 struct InstructionsIterator: IteratorProtocol {
     private let instructions: [Instruction]
@@ -446,7 +612,7 @@ extension ViewController: PickerViewDelegate {
 ```
 
 ## Factory Method (Virtual Constructor)
- > Factory Method is used when there are several classes that implement a common protocol or share a common base class.
+ > Used when there are several classes that implement a common protocol or share a common base class.
  This pattern allows implementation subclasses to provide specializations without requiring the components that rely on them
  to know any details of those classes and how they relate to each other.
 
@@ -696,7 +862,7 @@ let enginolaMMU = abstractFactory.factory(.enginola).createMMU()
 ```
 
 ## Class Cluster
- > Architecture that groups a number of private, concrete subclasses under a public, abstract superclass (pattern based on Abstract Factory).
+ > Groups a number of private, concrete subclasses under a public, abstract superclass (pattern based on Abstract Factory).
 Class cluster is actually a specific implementation of a factory but the initialiser is used instead of the Factory Method to decide what instance to return. Also Factories are used to create instances implementing a protocol while Class Cluster is only suitable for creation of subclasses of an Abstract Class.
  
 However Class Clusters can only be implemented in Objective-C. Unlike Objective-C (where we can just replace 'self' in init method, and return proper subclass object based on the input type) when we call init method of a class we get only instance of that particular class in Swift...so we can't rely on the init method to construct a Class Cluster. A substitution whould be to use a Factory instead.
@@ -710,7 +876,7 @@ NSNumber, NSString, NSArray, NSDictionary, NSData. </br>
 
 
 ## Builder
-> Builder pattern separates the construction of a complex object from its representation so that the same construction process can create different representations. Builder pattern is not too much adopted in Objective-C/Swift.
+> Separates the construction of a complex object from its representation so that the same construction process can create different representations. Builder pattern is not too much adopted in Objective-C/Swift.
 
 #### Cocoa/CocoaTouch Adaptation: </br> 
 None. 
@@ -847,7 +1013,7 @@ let userId = AccountManager.shared.accountInfo.userId
 ```
 
 ## Object Pool
-> Object Pools are used when we need some heavy object to be cached (because of expensive initialization).
+> Used when there's a need for caching a 'heavy' object (has an expensive initialization).
 
 Note: The Pool should be responsible for reseting the state of the objects. </br>
 
@@ -922,7 +1088,7 @@ class Pool<T: StateResetable> {
 ```
 
 ## Decorator
-> Pattern allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class. </br>
+> Allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class. </br>
 
 #### Cocoa/CocoaTouch Adaptation: </br> 
 NSAttributedString, NSScrollView, and UIDatePicker </br>
