@@ -305,6 +305,102 @@ backlog.forEach {
 }
 ```
 
+## Abstract Factory 
+> Allows a calling component to obtain a family or group of related objects without needing to know which classes were used to create them. </br>
+
+#### Cocoa/CocoaTouch Adaptation:
+Not sure which cocoa/cocoa touch classes adopt the pattern (many adopt the Class Cluster which is very similar but can only be implemented in Objective-C though). </br>
+
+### Implementation
+```swift
+
+import Foundation
+
+enum Level {
+    case junior, middle, senior
+}
+
+protocol SoftwareEngineer {}
+
+class JuniorSE: SoftwareEngineer {}
+class MiddleSE: SoftwareEngineer {}
+class SeniorSE: SoftwareEngineer {}
+
+protocol QA {}
+
+class JuniorQA: QA {}
+class MiddleQA: QA {}
+class SeniorQA: QA {}
+
+/* Abstract Factory */
+protocol Company {
+    func resources(_ level: Level) -> Team
+}
+
+protocol Team {
+    func softwareEngineer() -> SoftwareEngineer
+    func qaEngineer() -> QA
+}
+
+/* Concrete Company */
+final class Facebook: Company {
+    private let juniors = Juniors()
+    private let middles = Middles()
+    private let seniors = Seniors()
+    
+    /* Factory Method */
+    func resources(_ level: Level) -> Team {
+        switch level {
+        case .junior:
+            return juniors
+        case .middle:
+            return middles
+        case .senior:
+            return seniors
+        }
+    }
+}
+
+final class Juniors: Team {
+    func softwareEngineer() -> SoftwareEngineer {
+        return JuniorSE()
+    }
+    
+    func qaEngineer() -> QA {
+        return JuniorQA()
+    }
+}
+
+final class Middles: Team {
+    func softwareEngineer() -> SoftwareEngineer {
+        return MiddleSE()
+    }
+    
+    func qaEngineer() -> QA {
+        return MiddleQA()
+    }
+}
+
+final class Seniors: Team {
+    func softwareEngineer() -> SoftwareEngineer {
+        return SeniorSE()
+    }
+    
+    func qaEngineer() -> QA {
+        return SeniorQA()
+    }
+}
+
+```
+
+### Usage:
+```swift
+let facebook: Company = Facebook()
+
+let seniorQA = facebook.resources(.senior).qaEngineer()
+let midSE = facebook.resources(.middle).softwareEngineer()
+```
+
 ## Iterator
 > Used to traverse a container and access the container's elements.</br> 
 
@@ -778,87 +874,6 @@ class ViewController: UIViewController {
     }
 }
 
-```
-
-## Abstract Factory 
-> Allows a calling component to obtain a family or group of related objects without needing to know which classes were used to create them. </br>
-
-#### Cocoa/CocoaTouch Adaptation:
-Not sure which cocoa/cocoa touch classes adopt the pattern (many adopt the Class Cluster which is very similar but can only be implemented in Objective-C though). </br>
-
-### Implementation
-```swift
-
-import Foundation
-
-enum Architecture {
-    case enginola
-    case ember
-}
-
-protocol CPU {}
-
-class EmberCPU: CPU {}
-class EnginolaCPU: CPU {}
-
-protocol MMU {}
-
-class EmberMMU: MMU {}
-class EnginolaMMU: MMU {}
-
-protocol AbstractFactory {
-    func factory(_ arch: Architecture) -> ToolKitFactory
-}
-
-protocol ToolKitFactory {
-    func createCPU() -> CPU
-    func createMMU() -> MMU
-}
-
-final class HardwareFactory: AbstractFactory {
-    private let emberToolkit = EmberToolkit()
-    private let enginolaToolkit = EnginolaToolkit()
-    
-    func factory(_ arch: Architecture) -> ToolKitFactory {
-        switch arch {
-        case .ember:
-            return emberToolkit
-        case .enginola:
-            return enginolaToolkit
-        }
-    }
-}
-
-final class EmberToolkit: ToolKitFactory {
-    func createCPU() -> CPU {
-        return EmberCPU()
-    }
-    
-    func createMMU() -> MMU {
-        return EmberMMU()
-    }
-}
-
-final class EnginolaToolkit: ToolKitFactory {
-    func createCPU() -> CPU {
-        return EnginolaCPU()
-    }
-    
-    func createMMU() -> MMU {
-        return  EnginolaMMU()
-    }
-}
-```
-
-### Usage:
-```swift
-let abstractFactory: AbstractFactory = HardwareFactory()
-
-let emberCPU = abstractFactory.factory(.ember).createCPU()
-let emberMMU = abstractFactory.factory(.ember).createMMU()
-
-let enginolaCPU = abstractFactory.factory(.enginola).createCPU()
-let enginolaMMU = abstractFactory.factory(.enginola).createMMU()
 ```
 
 ## Class Cluster
