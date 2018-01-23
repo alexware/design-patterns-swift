@@ -10,7 +10,7 @@ final class NotificationHandler<P> {
     }
 }
 
-final class Observer<P> {
+final class ObserverSet<P> {
     private var handlers = [NotificationHandler<P>]()
     private var queue = DispatchQueue(label: "com.zayats.oleh.observer", attributes: [])
     
@@ -53,12 +53,13 @@ final class Observer<P> {
  * Girl class changes clothes and Guy is observing the changes lol
  */
 
+/* the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes */
 final class Girl {
     enum State {
         case dressedNormally, dressedForRoleGames, naked
     }
     
-    private var observers = Observer<State>()
+    private var observers = ObserverSet<State>()
     
     var state: State = .dressedNormally {
         didSet {
@@ -78,7 +79,7 @@ final class Girl {
     }
 }
 
-
+/* observer observer */
 final class Guy {
     private let girl: Girl
     private var handler: NotificationHandler<Girl.State>?
