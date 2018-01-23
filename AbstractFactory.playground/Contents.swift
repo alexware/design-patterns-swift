@@ -1,71 +1,84 @@
 
 import Foundation
 
-enum Architecture {
-    case enginola
-    case ember
+enum Level {
+    case junior, middle, senior
 }
 
-protocol CPU {}
+protocol SoftwareEngineer {}
 
-class EmberCPU: CPU {}
-class EnginolaCPU: CPU {}
+class JuniorSE: SoftwareEngineer {}
+class MiddleSE: SoftwareEngineer {}
+class SeniorSE: SoftwareEngineer {}
 
-protocol MMU {}
+protocol QA {}
 
-class EmberMMU: MMU {}
-class EnginolaMMU: MMU {}
+class JuniorQA: QA {}
+class MiddleQA: QA {}
+class SeniorQA: QA {}
 
-protocol AbstractFactory {
-    func factory(_ arch: Architecture) -> ToolKitFactory
+/* Abstract Factory */
+protocol Company {
+    func resources(_ level: Level) -> Team
 }
 
-protocol ToolKitFactory {
-    func createCPU() -> CPU
-    func createMMU() -> MMU
+protocol Team {
+    func softwareEngineer() -> SoftwareEngineer
+    func qaEngineer() -> QA
 }
 
-final class HardwareFactory: AbstractFactory {
-    private let emberToolkit = EmberToolkit()
-    private let enginolaToolkit = EnginolaToolkit()
+final class Facebook: Company {
+    private let juniors = Juniors()
+    private let middles = Middles()
+    private let seniors = Seniors()
     
-    func factory(_ arch: Architecture) -> ToolKitFactory {
-        switch arch {
-        case .ember:
-            return emberToolkit
-        case .enginola:
-            return enginolaToolkit
+    /* Factory Method */
+    func resources(_ level: Level) -> Team {
+        switch level {
+        case .junior:
+            return juniors
+        case .middle:
+            return middles
+        case .senior:
+            return seniors
         }
     }
 }
 
-final class EmberToolkit: ToolKitFactory {
-    func createCPU() -> CPU {
-        return EmberCPU()
+final class Juniors: Team {
+    func softwareEngineer() -> SoftwareEngineer {
+        return JuniorSE()
     }
     
-    func createMMU() -> MMU {
-        return EmberMMU()
+    func qaEngineer() -> QA {
+        return JuniorQA()
     }
 }
 
-final class EnginolaToolkit: ToolKitFactory {
-    func createCPU() -> CPU {
-        return EnginolaCPU()
+final class Middles: Team {
+    func softwareEngineer() -> SoftwareEngineer {
+        return MiddleSE()
     }
     
-    func createMMU() -> MMU {
-        return  EnginolaMMU()
+    func qaEngineer() -> QA {
+        return MiddleQA()
+    }
+}
+
+final class Seniors: Team {
+    func softwareEngineer() -> SoftwareEngineer {
+        return SeniorSE()
+    }
+    
+    func qaEngineer() -> QA {
+        return SeniorQA()
     }
 }
 
 /* Usage: */
 
-let abstractFactory: AbstractFactory = HardwareFactory()
+let facebook: Company = Facebook()
 
-let emberCPU = abstractFactory.factory(.ember).createCPU()
-let emberMMU = abstractFactory.factory(.ember).createMMU()
-
-let enginolaCPU = abstractFactory.factory(.enginola).createCPU()
-let enginolaMMU = abstractFactory.factory(.enginola).createMMU()
+let seniorQA = facebook.resources(.senior).qaEngineer()
+let midSE = facebook.resources(.middle).softwareEngineer()
 
