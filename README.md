@@ -305,6 +305,150 @@ backlog.forEach {
 }
 ```
 
+## Observer
+> Defines a one-to-many relationship so that when one object changes state, the others are notified and updated automatically. </br>
+
+#### Cocoa/CocoaTouch Adaptation:
+NotificationCenter/NSNotificationCenter, Key-Value Observing </br>
+
+### Implementation
+```swift
+import Foundation
+
+final class NotificationHandler<P> {
+    weak var subject: AnyObject?
+    let action: (AnyObject) -> (P) -> Void
+    init(subject: AnyObject, action: @escaping (AnyObject) -> (P) -> Void) {
+        self.subject = subject
+        self.action = action
+    }
+}
+
+final class ObserverSet<P> {
+    private var handlers = [NotificationHandler<P>]()
+    private var queue = DispatchQueue(label: "com.zayats.oleh.observer", attributes: [])
+    
+    init() {}
+    
+    func attach(_ closure: @escaping (P) -> Void) -> NotificationHandler<P> {
+        return attach(self, { _ in closure })
+    }
+    
+    private func attach<T: AnyObject>(_ subject: T,
+                                      _ closure: @escaping (T) -> (P) -> Void) -> NotificationHandler<P> {
+        
+        let handler = NotificationHandler<P>(subject: subject, action: { closure($0 as! T) })
+        queue.sync { handlers.append(handler) }
+        return handler
+    }
+    
+    func detach(_ handler: NotificationHandler<P>) {
+        queue.sync { handlers = handlers.filter { $0 !== handler } }
+    }
+    
+    func notify(_ params: P) {
+        var toPerform = [(P) -> Void]()
+        queue.sync {
+            handlers.forEach {
+                if let subject: AnyObject = $0.subject {
+                    toPerform.append($0.action(subject))
+                }
+            }
+            handlers = handlers.filter { $0.subject != nil }
+        }
+        toPerform.forEach { $0(params) }
+    }
+}
+```
+
+### Usage:
+```swift
+/* Let's have some fun! We will create 2 classes:
+ * Girl class changes clothes and Guy is observing the changes lol
+ */
+
+/* the subject, maintains a list of its dependents, called observers, and notifies 
+ * them automatically of any state changes 
+ */
+final class Girl {
+    enum State {
+        case dressedNormally, dressedForRoleGames, naked
+    }
+    
+    private var observers = ObserverSet<State>()
+    
+    var state: State = .dressedNormally {
+        didSet {
+            print("  Girl: <\(state)>")
+            observers.notify(state)
+        }
+    }
+    
+    init() {}
+    
+    func addObserverHandler(_ handler: @escaping (State) -> Void) -> NotificationHandler<State> {
+        return observers.attach(handler)
+    }
+    
+    func removeObserverHandler(_ handler: NotificationHandler<State>) {
+        observers.detach(handler)
+    }
+}
+
+/* the observer */
+final class Guy {
+    private let girl: Girl
+    private var handler: NotificationHandler<Girl.State>?
+    private let name: String
+    
+    init(name: String, subject: Girl) {
+        self.girl = subject
+        self.name = name
+    }
+    
+    func startObserving() {
+        guard handler == nil else {
+            return
+        }
+        
+        handler = girl.addObserverHandler { state in
+            switch state {
+            case .dressedNormally:
+                print("\(self.name): Nothing to see here.")
+            case .dressedForRoleGames:
+                print("\(self.name): Role games? This is interesting!")
+            case .naked:
+                print("\(self.name): Alert! The girl is naked!")
+            }
+        }
+    }
+    
+    func stopObserving() {
+        guard let handler = self.handler else { return }
+        girl.removeObserverHandler(handler)
+        print("\(self.name): I'm out!")
+    }
+}
+
+/* Action! */
+
+let girl = Girl()
+let boris = Guy(name: " Boris", subject: girl)
+let victor = Guy(name: "Victor", subject: girl)
+
+boris.startObserving()
+victor.startObserving()
+
+girl.state = .naked
+girl.state = .dressedForRoleGames
+girl.state = .dressedNormally
+
+boris.stopObserving()
+
+girl.state = .dressedForRoleGames
+girl.state = .dressedNormally
+```
+
 ## Abstract Factory 
 > Allows a calling component to obtain a family or group of related objects without needing to know which classes were used to create them. </br>
 
@@ -316,89 +460,88 @@ Not sure which cocoa/cocoa touch classes adopt the pattern (many adopt the Class
 
 import Foundation
 
-enum Level {
+enum EngineeringLevel {
     case junior, middle, senior
 }
 
-protocol SoftwareEngineer {}
+protocol SoftwareEngineerCompetencyMatrix {}
 
-class JuniorSE: SoftwareEngineer {}
-class MiddleSE: SoftwareEngineer {}
-class SeniorSE: SoftwareEngineer {}
+class JuniorSEMatrix: SoftwareEngineerCompetencyMatrix {}
+class MiddleSEMatrix: SoftwareEngineerCompetencyMatrix {}
+class SeniorSEMatrix: SoftwareEngineerCompetencyMatrix {}
 
-protocol QA {}
+protocol QACompetencyMatrix {}
 
-class JuniorQA: QA {}
-class MiddleQA: QA {}
-class SeniorQA: QA {}
+class JuniorQAMatrix: QACompetencyMatrix {}
+class MiddleQAMatrix: QACompetencyMatrix {}
+class SeniorQAMatrix: QACompetencyMatrix {}
+
+protocol CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix
+    func qaEngineerMatrix() -> QACompetencyMatrix
+}
 
 /* Abstract Factory */
 protocol Company {
-    func resources(_ level: Level) -> Team
+    func resources(_ level: EngineeringLevel) -> CompetencyMatrix
 }
 
-protocol Team {
-    func softwareEngineer() -> SoftwareEngineer
-    func qaEngineer() -> QA
-}
-
-/* Concrete Company */
 final class Facebook: Company {
-    private let juniors = Juniors()
-    private let middles = Middles()
-    private let seniors = Seniors()
+    private let juniorMatrix = JuniorMatrix()
+    private let middleMatrix = MiddleMatrix()
+    private let seniorMatrix = SeniorMatrix()
     
     /* Factory Method */
-    func resources(_ level: Level) -> Team {
+    func resources(_ level: EngineeringLevel) -> CompetencyMatrix {
         switch level {
         case .junior:
-            return juniors
+            return juniorMatrix
         case .middle:
-            return middles
+            return middleMatrix
         case .senior:
-            return seniors
+            return seniorMatrix
         }
     }
 }
 
-final class Juniors: Team {
-    func softwareEngineer() -> SoftwareEngineer {
-        return JuniorSE()
+final class JuniorMatrix: CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix {
+        return JuniorSEMatrix()
     }
     
-    func qaEngineer() -> QA {
-        return JuniorQA()
+    func qaEngineerMatrix() -> QACompetencyMatrix {
+        return JuniorQAMatrix()
     }
 }
 
-final class Middles: Team {
-    func softwareEngineer() -> SoftwareEngineer {
-        return MiddleSE()
+final class MiddleMatrix: CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix {
+        return MiddleSEMatrix()
     }
     
-    func qaEngineer() -> QA {
-        return MiddleQA()
+    func qaEngineerMatrix() -> QACompetencyMatrix {
+        return MiddleQAMatrix()
     }
 }
 
-final class Seniors: Team {
-    func softwareEngineer() -> SoftwareEngineer {
-        return SeniorSE()
+final class SeniorMatrix: CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix {
+        return SeniorSEMatrix()
     }
     
-    func qaEngineer() -> QA {
-        return SeniorQA()
+    func qaEngineerMatrix() -> QACompetencyMatrix {
+        return SeniorQAMatrix()
     }
 }
-
 ```
 
 ### Usage:
 ```swift
 let facebook: Company = Facebook()
 
-let seniorQA = facebook.resources(.senior).qaEngineer()
-let midSE = facebook.resources(.middle).softwareEngineer()
+/* competency info */
+let seniorQA = facebook.resources(.senior).qaEngineerMatrix()
+let midSE = facebook.resources(.middle).softwareEngineerMatrix()
 ```
 
 ## Iterator
