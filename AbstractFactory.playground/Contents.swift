@@ -1,77 +1,77 @@
 
 import Foundation
 
-enum Level {
+enum EngineeringLevel {
     case junior, middle, senior
 }
 
-protocol SoftwareEngineer {}
+protocol SoftwareEngineerCompetencyMatrix {}
 
-class JuniorSE: SoftwareEngineer {}
-class MiddleSE: SoftwareEngineer {}
-class SeniorSE: SoftwareEngineer {}
+class JuniorSEMatrix: SoftwareEngineerCompetencyMatrix {}
+class MiddleSEMatrix: SoftwareEngineerCompetencyMatrix {}
+class SeniorSEMatrix: SoftwareEngineerCompetencyMatrix {}
 
-protocol QA {}
+protocol QACompetencyMatrix {}
 
-class JuniorQA: QA {}
-class MiddleQA: QA {}
-class SeniorQA: QA {}
+class JuniorQAMatrix: QACompetencyMatrix {}
+class MiddleQAMatrix: QACompetencyMatrix {}
+class SeniorQAMatrix: QACompetencyMatrix {}
+
+protocol CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix
+    func qaEngineerMatrix() -> QACompetencyMatrix
+}
 
 /* Abstract Factory */
 protocol Company {
-    func resources(_ level: Level) -> Team
-}
-
-protocol Team {
-    func softwareEngineer() -> SoftwareEngineer
-    func qaEngineer() -> QA
+    func resources(_ level: EngineeringLevel) -> CompetencyMatrix
 }
 
 final class Facebook: Company {
-    private let juniors = Juniors()
-    private let middles = Middles()
-    private let seniors = Seniors()
+    private let juniorMatrix = JuniorMatrix()
+    private let middleMatrix = MiddleMatrix()
+    private let seniorMatrix = SeniorMatrix()
     
     /* Factory Method */
-    func resources(_ level: Level) -> Team {
+    func resources(_ level: EngineeringLevel) -> CompetencyMatrix {
         switch level {
         case .junior:
-            return juniors
+            return juniorMatrix
         case .middle:
-            return middles
+            return middleMatrix
         case .senior:
-            return seniors
+            return seniorMatrix
         }
     }
 }
 
-final class Juniors: Team {
-    func softwareEngineer() -> SoftwareEngineer {
-        return JuniorSE()
+final class JuniorMatrix: CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix {
+        return JuniorSEMatrix()
     }
     
-    func qaEngineer() -> QA {
-        return JuniorQA()
+    func qaEngineerMatrix() -> QACompetencyMatrix {
+        return JuniorQAMatrix()
     }
 }
 
-final class Middles: Team {
-    func softwareEngineer() -> SoftwareEngineer {
-        return MiddleSE()
+final class MiddleMatrix: CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix {
+        return MiddleSEMatrix()
     }
     
-    func qaEngineer() -> QA {
-        return MiddleQA()
+    func qaEngineerMatrix() -> QACompetencyMatrix {
+        return MiddleQAMatrix()
     }
 }
 
-final class Seniors: Team {
-    func softwareEngineer() -> SoftwareEngineer {
-        return SeniorSE()
+final class SeniorMatrix: CompetencyMatrix {
+    func softwareEngineerMatrix() -> SoftwareEngineerCompetencyMatrix {
+        return SeniorSEMatrix()
     }
     
-    func qaEngineer() -> QA {
-        return SeniorQA()
+    func qaEngineerMatrix() -> QACompetencyMatrix {
+        return SeniorQAMatrix()
     }
 }
 
@@ -79,6 +79,7 @@ final class Seniors: Team {
 
 let facebook: Company = Facebook()
 
-let seniorQA = facebook.resources(.senior).qaEngineer()
-let midSE = facebook.resources(.middle).softwareEngineer()
+/* info */
+let seniorQA = facebook.resources(.senior).qaEngineerMatrix()
+let midSE = facebook.resources(.middle).softwareEngineerMatrix()
 
