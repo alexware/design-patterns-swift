@@ -1,5 +1,17 @@
 # Implementing Design Patterns in Swift 4 ;]
 
+### Contents: 
+👮🏼 Behavioral              | 👷🏼 Creational      | 👨🏼‍🏭 Structural    | 👨🏼‍🎓 Non-GOF
+------------            | -------------   | ------------- | -------------
+[Chain of Responsibility](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/ChainOfResponsibility/) |[Factory Method](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/FactoryMethod/)   | [Facade](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Facade/)        |  [Dependency Injection](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/DependencyInjection/)
+[Strategy](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Strategy/)                |[Abstract Factory](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/AbstractFactory/) | [Decorator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Decorator/)     |  [Object Pool](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/ObjectPool/)
+[Command](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Command/)                 |[Singleton]()        | [Proxy](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Proxy/)         |  [Class Cluster]()
+[State](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/State/)                   |[Builder](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Builder/)          | [Adapter](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Adapter/)       |  [Private Class Data](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/PrivateClassData/)
+[Observer](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Observer/)                |[Prototype](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Prototype/)        |               |  [Delegate]()
+[Memento](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Memento/)                 |                 |               |  [Multicast Delegate](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/MulticastDelegate/)
+[Iterator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Iterator/)                |                 |               |  [DataSource]()
+
+
 Note: some of the code is omitted for brevity check out playground/project to see full implementation.
 
 ## Command
