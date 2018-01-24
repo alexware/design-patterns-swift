@@ -1,4 +1,6 @@
-# Implementing Design Patterns in Swift 4 ;]
+# Design Patterns in Swift 4 ;]
+
+### Table of Implementations:
 
 👮🏼 Behavioral              | 👷🏼 Creational      | 👨🏼‍🏭 Structural    | 👨🏼‍🎓 Non-GOF
 ------------            | -------------   | ------------- | -------------
