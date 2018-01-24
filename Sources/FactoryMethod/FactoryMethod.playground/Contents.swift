@@ -1,4 +1,3 @@
-/* Class Factory Method (Factory Method) */
 
 import UIKit
 
