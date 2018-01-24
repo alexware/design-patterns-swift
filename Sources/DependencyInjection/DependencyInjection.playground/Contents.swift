@@ -1,63 +1,50 @@
 
 import UIKit
 
-protocol DBConfiguration {
-    var host: String { get }
-    var port: Int    { get }
-    var username: String { get }
-    var password: String { get }
+/* 1. Initializer Injection (DI through an initializer)  */
+
+protocol Serializer {
+    func serialize(_ data: Data)
 }
 
-class DatabaseConfiguration: DBConfiguration {
-    var host: String {
-        return _host
-    }
+class DataSerializer: Serializer {
+    init() { }
+    func serialize(_ data: Data) { }
+}
+
+final class DataManager {
+    private let serializer: Serializer
     
-    var port: Int {
-        return _port
-    }
-    
-    var username: String {
-        return _username
-    }
-    
-    var password: String {
-        return _password
-    }
-    
-    private let _host: String
-    private let _port: Int
-    private let _username: String
-    private let _password: String
-    
-    init(host: String, port: Int, username: String, password: String) {
-        self._host = host
-        self._port = port
-        self._username = username
-        self._password = password
+    init(with serializer: Serializer) {
+        self.serializer = serializer
     }
 }
 
-protocol DBConnection {
-    var dsn: String { get }
-}
+let serializer = DataSerializer()
+let dataManager = DataManager(with: serializer)
 
-class DatabaseConnection {
-    var dsn: String {
-        return "\(configuration.username):\(configuration.password):\(configuration.host):\(configuration.port)"
-    }
-    
-    private let configuration: DBConfiguration
-    
-    init(configuration: DBConfiguration) {
-        self.configuration = configuration
+
+/* 2. Method Injection (dependency injection in methods)  */
+
+extension DataManager {
+    func serialize(data: Data, with serializer: Serializer) {
+        serializer.serialize(data)
     }
 }
 
-let configuration = DatabaseConfiguration(host: "localhost", port: 1111, username: "oleg", password: "applejesus2018")
-/* configuration is injected into DatabaseConnection class
- * without Dependency Injection, config would be created directly in DatabaseConnection
- * which is not good for testing and extension
- */
-let connection = DatabaseConnection(configuration: configuration)
-let dns = connection.dsn
+
+/* 3. Property Injection (DI using properties)  */
+
+protocol HTTPClient { }
+
+class NetworkClient: HTTPClient {}
+
+final class StoreCoordinator {
+    var httpClient: HTTPClient?
+    
+    init() { }
+}
+
+let httpClient = NetworkClient()
+let storeCoordinator = StoreCoordinator()
+storeCoordinator.httpClient = httpClient
