@@ -24,6 +24,8 @@ Interpreter |  |  |
 Each pattern is overviewed in a separate Markdown file which contains description, structure, UML, advantages/disadvantages etc. Click on a pattern name to see the more!
 
 👮🏼 Behavioural </br> 
+> Identify common communication patterns between objects and realize these patterns. By doing so, these patterns increase flexibility in carrying out this communication.
+
 [Chain of Responsibility]() </br> 
 [Strategy]() </br> 
 [Command]() </br> 
@@ -37,6 +39,8 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Visitor]() </br> 
 
 👷🏼 Creational </br> 
+> Design patterns that deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. 
+
 [Factory Method]() </br> 
 [Abstract Factory]() </br> 
 [Singleton]() </br> 
@@ -44,6 +48,8 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Prototype]() </br> 
 
 👨🏼‍🏭 Structural </br> 
+> Ease the design by identifying a simple way to realize relationships between entities.
+
 [Facade]() </br> 
 [Decorator]() </br> 
 [Proxy]() </br> 
@@ -53,6 +59,8 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Composite]() </br> 
 
 👨🏼‍🎓 Non-GOF </br> 
+> Design patterns that are not described in GOF book.
+
 [Dependency Injection]() </br> 
 [Object Pool]() </br> 
 [Private Class Data]() </br> 
@@ -62,6 +70,8 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Lazy Loading]() </br> 
 
 🧙‍♂️ Functional </br> 
+> These patterns come from functional programming languages.
+
 [Monad]() </br> 
 [Promise]() </br> 
 [Factory Kit]() </br> 
