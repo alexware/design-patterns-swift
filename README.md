@@ -5,6 +5,7 @@
 An open-source repo of design pattern implementations in Swift programming language. </br> 
 All examples are located [HERE](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources). Check out the table below for convenience.
 
+### Table of Implementations
 👮🏼 Behavioural              | 👷🏼 Creational      | 👨🏼‍🏭 Structural    | 👨🏼‍🎓 Non-GOF | 🧙‍♂️ Functional |
 ------------            | -------------   | ------------- | ------------- |  ------------- 
 [Chain of Responsibility](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/ChainOfResponsibility/ChainOfResponsibility.playground/Contents.swift) |[Factory Method](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/FactoryMethod/FactoryMethod.playground/Contents.swift)   | [Facade](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Facade/Facade)        |  [Dependency Injection](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/DependencyInjection/DependencyInjection.playground/Contents.swift) | Monad
@@ -19,4 +20,54 @@ Mediator |  |  |
 Interpreter |  |  | 
 [Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
 
+### Description
+👮🏼 Behavioural| |
+--------------|--------------|
+Chain of Responsibility | Description |
+Strategy | Description |
+Command | Description |
+State | Description |
+Observer | Description |
+Iterator | Description |
+Memento | Description | 
+Template Method | Description | 
+Mediator | Description |
+Interpreter | Description |
+Visitor | Description | 
 
+👷🏼 Creational| |
+--------------|--------------|
+Factory Method | Description |
+Abstract Factory | Description |
+Singleton | Description |
+Builder | Description |
+Prototype | Description |
+
+👨🏼‍🏭 Structural| |
+--------------|--------------|
+Facade | Description |
+Decorator | Description |
+Proxy | Description |
+Adapter | Description |
+Flyweight | Description |
+Bridge | Description |
+Composite | Description |
+
+👨🏼‍🎓 Non-GOF| |
+--------------|--------------|
+Dependency Injection | Description |
+Object Pool | Description |
+Private Class Data | Description |
+Delegate | Description |
+Multicast Delegate | Description |
+DataSource | Description |
+Lazy Loading | Description |
+
+🧙‍♂️ Functional| |
+--------------|--------------|
+Monad | Description |
+Promise | Description |
+Factory Kit | Description |
+Callback | Description |
+Functor | Description |
+Applicative Functor | Description |
