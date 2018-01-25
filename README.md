@@ -6,7 +6,7 @@ An open-source repo of design pattern implementations in Swift programming langu
 All examples are located [HERE](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources). Check out the table below for convenience.
 
 ### Table of Implementations
-👮🏼 Behavioural              | 👷🏼 Creational      | 👨🏼‍🏭 Structural    | 👨🏼‍🎓 Non-GOF | 🧙‍♂️ Functional |
+👮🏼 Behavioural              | 👷🏼 Creational      | 👨🏼‍🏭 Structural    | 👨🏼‍🎓 Non-GOF | 👨🏻‍🔬 Functional |
 ------------            | -------------   | ------------- | ------------- |  ------------- 
 [Chain of Responsibility](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/ChainOfResponsibility/ChainOfResponsibility.playground/Contents.swift) |[Factory Method](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/FactoryMethod/FactoryMethod.playground/Contents.swift)   | [Facade](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Facade/Facade)        |  [Dependency Injection](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/DependencyInjection/DependencyInjection.playground/Contents.swift) | Monad
 [Strategy](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Strategy/Strategy.playground/Contents.swift)                |[Abstract Factory](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/AbstractFactory/AbstractFactory.playground/Contents.swift) | [Decorator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Decorator/Decorator.playground/Contents.swift)     |  [Object Pool](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/ObjectPool/ObjectPool.playground/Contents.swift) | Promise
@@ -69,7 +69,7 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [DataSource]() </br> 
 [Lazy Loading]() </br> 
 
-🧙‍♂️ Functional </br> 
+👨🏻‍🔬 Functional </br> 
 > Design patterns that come from functional programming.
 
 [Monad]() </br> 
