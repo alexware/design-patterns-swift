@@ -18,7 +18,7 @@ Mediator |  |  |
 Interpreter |  |  | 
 [Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
 
-![alt text](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Art/art_overview_image.png)
+
 
 ## Name </br>
 > Short description. </br> 
@@ -26,11 +26,11 @@ Interpreter |  |  |
 #### iOS/MacOS Adaptation: </br> 
 (if any). </br>
 
-### UML Diagram: </br> 
+#### UML Diagram: </br> 
 
-### Implementation: </br> 
+#### Implementation: </br> 
 ```swift
 ```
-### Usage: </br> 
+#### Usage: </br> 
 ```swift
 ```
