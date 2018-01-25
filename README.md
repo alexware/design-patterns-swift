@@ -20,54 +20,51 @@ Mediator |  |  |
 Interpreter |  |  | 
 [Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
 
-### Description
-👮🏼 Behavioural| |
---------------|--------------|
-Chain of Responsibility | Description |
-Strategy | Description |
-Command | Description |
-State | Description |
-Observer | Description |
-Iterator | Description |
-Memento | Description | 
-Template Method | Description | 
-Mediator | Description |
-Interpreter | Description |
-Visitor | Description | 
+### Overview 
+Each pattern is overviewed in a separate Markdown file which contains description, structure, UML, advantages/disadvantages etc. Click on a pattern name to see the more!
 
-👷🏼 Creational| |
---------------|--------------|
-Factory Method | Description |
-Abstract Factory | Description |
-Singleton | Description |
-Builder | Description |
-Prototype | Description |
+👮🏼 Behavioural </br> 
+[Chain of Responsibility]() </br> 
+[Strategy]() </br> 
+[Command]() </br> 
+[State]() </br> 
+[Observer]() </br> 
+[Iterator]() </br> 
+[Memento]() </br> 
+[Template Method]() </br> 
+[Mediator]() </br> 
+[Interpreter]() </br> 
+[Visitor]() </br> 
 
-👨🏼‍🏭 Structural| |
---------------|--------------|
-Facade | Description |
-Decorator | Description |
-Proxy | Description |
-Adapter | Description |
-Flyweight | Description |
-Bridge | Description |
-Composite | Description |
+👷🏼 Creational </br> 
+[Factory Method]() </br> 
+[Abstract Factory]() </br> 
+[Singleton]() </br> 
+[Builder]() </br> 
+[Prototype]() </br> 
 
-👨🏼‍🎓 Non-GOF| |
---------------|--------------|
-Dependency Injection | Description |
-Object Pool | Description |
-Private Class Data | Description |
-Delegate | Description |
-Multicast Delegate | Description |
-DataSource | Description |
-Lazy Loading | Description |
+👨🏼‍🏭 Structural </br> 
+[Facade]() </br> 
+[Decorator]() </br> 
+[Proxy]() </br> 
+[Adapter]() </br> 
+[Flyweight]() </br> 
+[Bridge]() </br> 
+[Composite]() </br> 
 
-🧙‍♂️ Functional| |
---------------|--------------|
-Monad | Description |
-Promise | Description |
-Factory Kit | Description |
-Callback | Description |
-Functor | Description |
-Applicative Functor | Description |
+👨🏼‍🎓 Non-GOF </br> 
+[Dependency Injection]() </br> 
+[Object Pool]() </br> 
+[Private Class Data]() </br> 
+[Delegate]() </br> 
+[Multicast Delegate]() </br> 
+[DataSource]() </br> 
+[Lazy Loading]() </br> 
+
+🧙‍♂️ Functional </br> 
+[Monad]() </br> 
+[Promise]() </br> 
+[Factory Kit]() </br> 
+[Callback]() </br> 
+[Functor]() </br> 
+[Applicative Functor]() </br> 
