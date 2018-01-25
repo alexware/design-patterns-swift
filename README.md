@@ -1,6 +1,8 @@
 ![alt text](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Art/art_title_image.png)
 
-An open-source repo of programming design pattern implementations in Swift 4. 
+![Language](https://img.shields.io/badge/language-swift%204.0-orange.svg)
+
+An open-source repo of design pattern implementations in Swift programming language. 
 
 All examples are located [HERE](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources). Check out the table below for convenience.
 
