@@ -24,7 +24,7 @@ Interpreter |  |  |
 Each pattern is overviewed in a separate Markdown file which contains description, structure, UML, advantages/disadvantages etc. Click on a pattern name to see the more!
 
 👮🏼 Behavioural </br> 
-> Identify common communication patterns between objects and realize these patterns. By doing so, these patterns increase flexibility in carrying out this communication.
+> Design patterns that identify common communication patterns between objects and realize these patterns. By doing so, these patterns increase flexibility in carrying out this communication.
 
 [Chain of Responsibility]() </br> 
 [Strategy]() </br> 
@@ -48,7 +48,7 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Prototype]() </br> 
 
 👨🏼‍🏭 Structural </br> 
-> Ease the design by identifying a simple way to realize relationships between entities.
+> Design patterns that ease the design by identifying a simple way to realize relationships between entities.
 
 [Facade]() </br> 
 [Decorator]() </br> 
@@ -59,7 +59,7 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Composite]() </br> 
 
 👨🏼‍🎓 Non-GOF </br> 
-> Design patterns that are not described in GOF book.
+> Design patterns that are not described in the GOF book.
 
 [Dependency Injection]() </br> 
 [Object Pool]() </br> 
@@ -70,7 +70,7 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Lazy Loading]() </br> 
 
 🧙‍♂️ Functional </br> 
-> These patterns come from functional programming languages.
+> Design patterns that come from functional programming.
 
 [Monad]() </br> 
 [Promise]() </br> 
