@@ -14,7 +14,7 @@
 Template Method |  |  | 
 Mediator |  |  | 
 Interpreter |  |  | 
-Visitor  |  |  | 
+[Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
 
 ## Command
 > Pattern is used to incapsulate an operation (parameters required to execute the operation) so that it can be invoked later or by a different component. </br> 
