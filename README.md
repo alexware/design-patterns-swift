@@ -18,7 +18,7 @@ Mediator |  |  |
 Interpreter |  |  | 
 [Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
 
-
+# -- Overview --
 
 ## Name </br>
 > Short description. </br> 
