@@ -1,7 +1,7 @@
 
 ' * ' - mandatory
 
-# Pattern Name*
+# Pattern Name (Alternative Name)*
 
 ### Description*
 
