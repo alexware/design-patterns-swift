@@ -16,7 +16,7 @@ All examples are located [HERE](https://github.com/oleh-zayats/design-patterns-s
 [Memento](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Memento/Memento.playground/Contents.swift)|                 |Bridge        |  [Multicast Delegate](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/MulticastDelegate/MulticastDelegate.playground/Contents.swift) | Applicative Functor
 [Iterator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Iterator/Iterator.playground/Contents.swift)|                 |       Composite        |  [DataSource](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/DataSource/DataSource.playground/Contents.swift)
 Template Method |  |  | [Lazy Loading](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/LazyLoading/LazyLoading.playground/Contents.swift)
-Mediator |  |  | 
+[Mediator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Mediator/Mediator/Mediator) |  |  | 
 Interpreter |  |  | 
 [Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
 
@@ -34,7 +34,7 @@ Each pattern is overviewed in a separate Markdown file which contains descriptio
 [Iterator](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Iterator/Iterator.md) </br> 
 [Memento](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Memento/Memento.md) </br> 
 Template Method </br> 
-Mediator </br> 
+[Mediator](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Mediator/Mediator.md) </br> 
 Interpreter</br> 
 [Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.md) </br> 
 
