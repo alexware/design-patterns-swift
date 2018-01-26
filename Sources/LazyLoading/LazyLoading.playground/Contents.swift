@@ -1,6 +1,23 @@
 
 import Foundation
 
+// abstract helper code:
+
+protocol Process { }
+struct Component { }
+struct Subsystem { func launch(process: Process) {} }
+struct SystemProcess: Process { }
+
+class Module {
+    let configuration: Component
+    let data: Component
+    var processSystem = Subsystem()
+    init(configuration: Component, data: Component) {
+        self.configuration = configuration
+        self.data = data
+    }
+}
+
 // Usage:
 
 // 1. Self-executing closure
@@ -13,6 +30,8 @@ class System {
     }()
     
     func launch(process: Process) {
+        
+        // lazy loading triggered here:
         self.module.processSystem.launch(process: process)
     }
 }
@@ -33,18 +52,10 @@ class System2 {
     }
 }
 
-// abstract helper code:
+let system = System()
+// module is not loaded yet
 
-protocol Process { }
-struct Component { }
-struct Subsystem { func launch(process: Process) {} }
+let process  = SystemProcess()
+system.launch(process: process)
 
-class Module {
-    let configuration: Component
-    let data: Component
-    var processSystem = Subsystem()
-    init(configuration: Component, data: Component) {
-        self.configuration = configuration
-        self.data = data
-    }
-}
+
