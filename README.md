@@ -16,7 +16,7 @@ All examples are located [HERE](https://github.com/oleh-zayats/design-patterns-s
 [Memento](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Memento/Memento.playground/Contents.swift)|                 |Bridge        |  [Multicast Delegate](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/MulticastDelegate/MulticastDelegate.playground/Contents.swift) | Applicative Functor
 [Iterator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Iterator/Iterator.playground/Contents.swift)|                 |       Composite        |  [DataSource](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/DataSource/DataSource.playground/Contents.swift)
 Template Method |  |  | [Lazy Loading](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/LazyLoading/LazyLoading.playground/Contents.swift)
-[Mediator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Mediator/Mediator/Mediator) |  |  | 
+[Mediator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Mediator/Mediator/Mediator) |  |  | [Throttling](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Throttling/Throttling.playground/Contents.swift)
 Interpreter |  |  | 
 [Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
 
@@ -69,6 +69,7 @@ Composite </br>
 [Multicast Delegate](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/MulticastDelegate/MulticastDelegate.md) </br> 
 [DataSource](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/DataSource/DataSource.md) </br> 
 [Lazy Loading](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/LazyLoading/LazyLoading.md) </br> 
+[Throttling](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Throttling/Throttling.md)
 
 👨🏻‍🔬 Functional </br> 
 > Design patterns that come from functional programming.
