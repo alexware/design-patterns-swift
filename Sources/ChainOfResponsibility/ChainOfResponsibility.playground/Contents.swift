@@ -133,7 +133,7 @@ let m3 = SoftwareEngineer(name: "Dima", level: .middle)
 
 let middles = EngineeringTeam(engineers: [m1, m2, m3], level: .middle, higherCompetencyTeam: seniors)
 
-/* Juniors fresh from galera's 'Base Camp' to sink the ship...Ahoy! */
+/* Juniors fresh from basecamp. Ready to sink the ship. Ahoy! */
 let j1 = SoftwareEngineer(name: "Kyrylo", level: .junior)
 let j2 = SoftwareEngineer(name: "Mykyta", level: .junior)
 let j3 = SoftwareEngineer(name: "Pavlo", level: .junior)
