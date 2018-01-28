@@ -9,7 +9,6 @@
 import Foundation
 
 struct DiskManager {
-    
     private let fileManager = FileManager.default
     
     var saveDirectory: URL {

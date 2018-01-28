@@ -17,7 +17,7 @@ enum ImageFormat {
     case jpeg(quality: CGFloat)
 }
 
-struct ImageDataProvider {
+struct RepresentationDataProvider {
     func data(from image: UIImage, withFormat format: ImageFormat) -> Result<Data> {
         switch format {
         case .jpeg(let quality):

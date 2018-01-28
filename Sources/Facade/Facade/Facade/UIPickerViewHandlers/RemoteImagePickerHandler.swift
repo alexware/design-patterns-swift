@@ -9,7 +9,6 @@
 import UIKit
 
 final class RemoteImagePickerHandler: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    
     weak var delegate: PickerViewDelegate?
     
     func defaultImagePickerURL() -> URL {
@@ -37,10 +36,12 @@ final class RemoteImagePickerHandler: NSObject, UIPickerViewDataSource, UIPicker
     }
     
     private lazy var imageURLs: [URL] = {
-        return [ "https://upload.wikimedia.org/wikipedia/commons/f/fd/Meteor_Crater_-_Arizona.jpg",
-                 "https://upload.wikimedia.org/wikipedia/commons/0/0d/Deepwater_Horizon_oil_spill_-_May_24%2C_2010.jpg",
-                 "https://upload.wikimedia.org/wikipedia/commons/c/c3/Glacial_lakes%2C_Bhutan.jpg",
-                 "https://upload.wikimedia.org/wikipedia/commons/c/c6/Jeju_Island.jpg",
-                 "https://upload.wikimedia.org/wikipedia/commons/4/4a/MtCleveland_ISS013-E-24184.jpg" ].flatMap { return URL(string: $0) }
+        return [
+            "https://upload.wikimedia.org/wikipedia/commons/f/fd/Meteor_Crater_-_Arizona.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/0/0d/Deepwater_Horizon_oil_spill_-_May_24%2C_2010.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/c/c3/Glacial_lakes%2C_Bhutan.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/c/c6/Jeju_Island.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/4/4a/MtCleveland_ISS013-E-24184.jpg"
+            ].flatMap { return URL(string: $0) }
     }()
 }

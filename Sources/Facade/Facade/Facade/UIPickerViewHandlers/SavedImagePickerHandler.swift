@@ -9,7 +9,6 @@
 import UIKit
 
 final class SavedImagePickerHandler: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    
     weak var delegate: PickerViewDelegate?
     
     var urls: [URL] = []
