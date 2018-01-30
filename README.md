@@ -7,18 +7,18 @@ All examples are located [HERE](https://github.com/oleh-zayats/design-patterns-s
 
 ### Table of Implementations
 👮🏼 Behavioural              | 👷🏼 Creational      | 👨🏼‍🏭 Structural    | 👨🏼‍🎓 Non-GOF | 👨🏻‍🔬 Functional |
-------------            | -------------   | ------------- | ------------- |  ------------- 
-[Chain of Responsibility](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/ChainOfResponsibility/ChainOfResponsibility.playground/Contents.swift) |[Factory Method](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/FactoryMethod/FactoryMethod.playground/Contents.swift) | [Facade](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Facade/Facade) | [Dependency Injection](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/DependencyInjection/DependencyInjection.playground/Contents.swift) | [Functor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Functor/Functor.playground/Contents.swift)
-[Strategy](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Strategy/Strategy.playground/Contents.swift) |[Abstract Factory](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/AbstractFactory/AbstractFactory.playground/Contents.swift) | [Decorator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Decorator/Decorator.playground/Contents.swift)     |  [Object Pool](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/ObjectPool/ObjectPool.playground/Contents.swift) | Applicative Functor 
-[Command](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Command/Command) |[Singleton](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Singleton/Singleton.playground/Contents.swift)        | [Proxy](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Proxy/Proxy.playground/Contents.swift)         |  Caching | Monad 
-[State](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/State/State.playground/Contents.swift)                   |[Builder](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Builder/Builder.playground/Contents.swift)|[Adapter](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Adapter/Adapter.playground/Contents.swift)| [Private Class Data](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/PrivateClassData/PrivateClassData.playground/Contents.swift) | Callback
-[Observer](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Observer/Observer.playground/Contents.swift)|[Prototype](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Prototype/Prototype.playground/Contents.swift)|[Flyweight](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Flyweight/Flyweight.playground/Contents.swift)| [Delegate](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Delegate/Delegate.playground/Contents.swift) |  Factory Kit 
-[Memento](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Memento/Memento.playground/Contents.swift)|                 |Bridge        |  [Multicast Delegate](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/MulticastDelegate/MulticastDelegate.playground/Contents.swift) | [Future & Promise](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/FuturePromise/Future%2BPromise/FuturePromise)
-[Iterator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Iterator/Iterator.playground/Contents.swift)|                 |       Composite        |  [DataSource](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/DataSource/DataSource.playground/Contents.swift)
-Template Method |  |  | [Lazy Loading](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/LazyLoading/LazyLoading.playground/Contents.swift)
-[Mediator](https://github.com/oleh-zayats/design-patterns-swift/tree/master/Sources/Mediator/Mediator/Mediator) |  |  | [Throttling](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Throttling/Throttling.playground/Contents.swift)
+------------ | ------------- | ------------- | ------------- |  ------------- |
+[Chain of Responsibility](https://git.io/vNH7g) | [Factory Method](https://git.io/vNH7o) | [Facade](https://git.io/vNH7i) | [Dependency Injection](https://git.io/vNH71) | [Functor](https://git.io/vNH7S) |
+[Strategy]() |[Abstract Factory](https://git.io) | [Decorator](https://git.io/vNH5v) | [Object Pool](https://git.io/vNH5U) | Applicative  
+[Command](https://git.io/vNH5I) | [Singleton](https://git.io/vNH5t) | [Proxy](https://git.io/vNH5Y)  |  Caching | Monad 
+[State](https://git.io/vNH5G) | [Builder](https://git.io/vNH5n) | [Adapter](https://git.io/vNH5C) | [Private Class Data](https://git.io/vNH5l) | Callback
+[Observer](https://git.io/vNH54) | [Prototype](https://git.io/vNH5R) | [Flyweight](https://git.io/vNH5E) | [Delegate](https://git.io/vNH5u) | Factory Kit 
+[Memento](https://git.io/vNH5z)| | Bridge | [Multicast Delegate](https://git.io/vNH5i) | [Future & Promise](https://git.io/vNH5D)
+[Iterator](https://git.io/vNH59)| | Composite | [DataSource](https://git.io/vNH55)
+Template Method |  |  | [Lazy Loading](https://git.io/vNH5F)
+[Mediator](https://git.io/vNH5b) |  |  | [Throttling](https://git.io/vNH5N)
 Interpreter |  |  | 
-[Visitor](https://github.com/oleh-zayats/design-patterns-swift/blob/master/Sources/Visitor/Visitor.playground/Contents.swift)  |  |  | 
+[Visitor](https://git.io/vNH5p)  |  |  | 
 
 ### Overview 
 Each pattern is overviewed in a separate Markdown file which contains description, structure, UML, advantages/disadvantages etc. Click on a pattern title to see more.
